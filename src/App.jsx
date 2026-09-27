@@ -105,6 +105,8 @@ export default function App() {
       {/* Dish Detail Modal Dialog */}
       <DishDetailModal
         dish={selectedDish}
+        menu={restaurantData.menu}
+        onSelectDish={(dish) => setSelectedDish(dish)}
         onClose={() => setSelectedDish(null)}
         onReserveForDish={handleReserveForDish}
       />

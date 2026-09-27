@@ -190,10 +190,20 @@ export default function AiConciergeModal({ isOpen, onClose, menu, onSelectDish, 
                   {recommendation.reason}
                 </p>
 
-                <div className="pt-1 text-xs font-mono text-[#B86B35] flex items-center gap-1.5">
-                  <Wine size={13} />
-                  <span>Pair with: <strong className="text-[#2B1B17] font-serif italic">{recommendation.dish.pair}</strong></span>
-                </div>
+                {recommendation.dish.pair && (
+                  <button
+                    type="button"
+                    onClick={() => {
+                      onClose();
+                      onSelectDish({ ...recommendation.dish, openPairFirst: true });
+                    }}
+                    className="pt-1 text-xs font-mono text-[#8C7769] hover:text-[#B86B35] flex items-center gap-1.5 text-left group cursor-pointer transition-colors duration-200"
+                    title={recommendation.dish.pair}
+                  >
+                    <Wine size={13} className="text-[#B86B35] shrink-0" />
+                    <span>Pair with: <strong className="text-[#2B1B17] group-hover:text-[#B86B35] font-serif transition-colors duration-200">{recommendation.dish.pair}</strong></span>
+                  </button>
+                )}
 
                 <div className="flex gap-2 pt-2">
                   <button

@@ -10,10 +10,10 @@ export default function ChefAndAwards({ chef, awards }) {
       {/* Section Header */}
       <div className="text-center max-w-2xl mx-auto mb-6 space-y-1">
         <p className="text-[11px] font-mono text-[#B86B35] tracking-[0.25em] uppercase font-semibold">
-          [ 05 // MAESTRO & CRITICAL ACCLAIM ]
+          [ 05 // MAESTRO  ]
         </p>
         <h2 className="text-2xl sm:text-4xl font-serif text-[#2B1B17] leading-snug">
-          Culinary Leadership & Recognition
+          Culinary Leadership
         </h2>
       </div>
 

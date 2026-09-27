@@ -1,11 +1,35 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { X, Utensils, Wine } from "lucide-react";
 import DietaryBadges, { VegSymbol, NonVegSymbol } from "./DietaryBadges";
+import { findPairedDish } from "../utils/pairingHelper";
 
-export default function DishDetailModal({ dish, onClose, onReserveForDish }) {
+export default function DishDetailModal({ dish, menu, onClose, onReserveForDish }) {
   if (!dish) return null;
 
-  const isNonVeg = dish.tags?.includes("nonveg") || dish.diet === "Non-Veg" || dish.diet === "Seafood";
+  const [activeDishId, setActiveDishId] = useState(null);
+  const [primaryDish, setPrimaryDish] = useState(null);
+  const [pairedDish, setPairedDish] = useState(null);
+
+  useEffect(() => {
+    if (dish) {
+      setPrimaryDish(dish);
+      const paired = findPairedDish(dish.pair, menu);
+      setPairedDish(paired);
+      if (dish.openPairFirst && paired) {
+        setActiveDishId(paired.id);
+      } else {
+        setActiveDishId(dish.id);
+      }
+    } else {
+      setPrimaryDish(null);
+      setPairedDish(null);
+      setActiveDishId(null);
+    }
+  }, [dish, menu]);
+
+  const currentDish = (activeDishId === pairedDish?.id && pairedDish) ? pairedDish : primaryDish || dish;
+  const otherDish = (currentDish?.id === primaryDish?.id) ? pairedDish : primaryDish;
+  const isNonVeg = currentDish?.tags?.includes("nonveg") || currentDish?.diet === "Non-Veg" || currentDish?.diet === "Seafood";
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 overflow-y-auto">
@@ -31,19 +55,20 @@ export default function DishDetailModal({ dish, onClose, onReserveForDish }) {
 
         <div className="grid grid-cols-1 md:grid-cols-12">
           {/* Dish Image */}
-          <div className="md:col-span-6 relative aspect-square md:aspect-auto min-h-[240px] md:min-h-full overflow-hidden bg-[#F5EFEB]">
+          <div className="md:col-span-6 relative aspect-square md:aspect-auto min-h-[260px] md:min-h-full overflow-hidden bg-[#F5EFEB]">
             <img
-              src={dish.img}
-              alt={dish.name}
-              className="w-full h-full object-cover object-center"
+              key={currentDish.id || currentDish.name}
+              src={currentDish.img}
+              alt={currentDish.name}
+              className="w-full h-full object-cover object-center transition-all duration-300"
             />
             {/* Dietary Tags Overlay */}
-            <div className="absolute top-4 left-4 flex flex-wrap gap-1.5 z-10 bg-white/90 backdrop-blur-sm p-1.5 rounded-xl border border-[#EAE1D5] shadow-2xs">
-              <DietaryBadges tags={dish.tags} diet={dish.diet} showLabels={true} />
+            <div className="absolute top-4 left-4 flex flex-wrap gap-1.5 z-10 bg-white/95 backdrop-blur-sm p-1.5 rounded-xl border border-[#EAE1D5] shadow-2xs">
+              <DietaryBadges tags={currentDish.tags} diet={currentDish.diet} showLabels={true} />
             </div>
-            {dish.calories && (
-              <div className="absolute bottom-4 left-4 font-mono text-[10px] tracking-wider text-[#4A3B34] bg-white/90 backdrop-blur-sm px-2.5 py-1 rounded-full border border-[#EAE1D5]">
-                {dish.calories}
+            {currentDish.calories && (
+              <div className="absolute bottom-4 left-4 font-mono text-[10px] tracking-wider text-[#4A3B34] bg-white/95 backdrop-blur-sm px-2.5 py-1 rounded-full border border-[#EAE1D5]">
+                {currentDish.calories}
               </div>
             )}
           </div>
@@ -54,15 +79,15 @@ export default function DishDetailModal({ dish, onClose, onReserveForDish }) {
               <div className="flex items-center gap-2">
                 {isNonVeg ? <NonVegSymbol /> : <VegSymbol />}
                 <h3 className="font-serif text-2xl sm:text-3xl text-[#2B1B17] leading-snug">
-                  {dish.name}
+                  {currentDish.name}
                 </h3>
               </div>
 
               <div className="flex items-center justify-between">
                 <span className="font-mono text-lg text-[#B86B35] font-semibold">
-                  {dish.price}
+                  {currentDish.price}
                 </span>
-                <DietaryBadges tags={dish.tags?.filter(t => t !== "veg" && t !== "nonveg")} />
+                <DietaryBadges tags={currentDish.tags?.filter(t => t !== "veg" && t !== "nonveg")} />
               </div>
 
               {/* Ingredients & Flavor Profile */}
@@ -72,7 +97,7 @@ export default function DishDetailModal({ dish, onClose, onReserveForDish }) {
                     Artisanal Ingredients
                   </span>
                   <p className="text-[#4A3B34] leading-relaxed">
-                    {dish.ingredients}
+                    {currentDish.ingredients}
                   </p>
                 </div>
 
@@ -81,22 +106,39 @@ export default function DishDetailModal({ dish, onClose, onReserveForDish }) {
                     Flavor Profile
                   </span>
                   <p className="text-[#4A3B34] leading-relaxed italic font-serif text-sm">
-                    "{dish.flavor}"
+                    "{currentDish.flavor}"
                   </p>
                 </div>
 
-                {dish.pair && (
-                  <div className="p-2.5 rounded-xl bg-white border border-[#EAE1D5] flex items-start gap-2 shadow-2xs">
-                    <Wine size={15} className="text-[#B86B35] shrink-0 mt-0.5" />
-                    <div>
-                      <span className="font-mono uppercase text-[10px] tracking-wider text-[#8C7769] block font-semibold">
-                        Sommelier Pairing
-                      </span>
-                      <span className="text-[#2B1B17] text-xs font-serif font-medium">
-                        {dish.pair}
-                      </span>
+                {/* PAIR WITH: Clean minimal card without clutter tags, subtle color change on hover, toggling A to B & B to A */}
+                {otherDish && (
+                  <button
+                    type="button"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setActiveDishId(otherDish.id);
+                    }}
+                    className="w-full text-left p-3.5 rounded-2xl bg-white hover:bg-[#F7F2EC] border border-[#EAE1D5] hover:border-[#DFC8B2] transition-colors duration-200 flex items-center justify-between gap-3 group cursor-pointer shadow-2xs mt-3"
+                    title={otherDish.name}
+                  >
+                    <div className="flex items-center gap-3 min-w-0">
+                      <div className="w-8 h-8 rounded-full bg-[#B86B35]/10 text-[#B86B35] flex items-center justify-center shrink-0 group-hover:bg-[#B86B35] group-hover:text-white transition-colors duration-200">
+                        <Wine size={16} />
+                      </div>
+                      <div className="min-w-0">
+                        <span className="font-mono uppercase text-[9px] tracking-widest text-[#8C7769] block font-medium">
+                          Pair with
+                        </span>
+                        <span className="text-[#2B1B17] group-hover:text-[#B86B35] text-sm font-serif font-medium transition-colors duration-200 line-clamp-1 mt-0.5 block">
+                          {otherDish.name}
+                        </span>
+                      </div>
                     </div>
-                  </div>
+
+                    <span className="font-mono text-xs font-semibold text-[#8C7769] group-hover:text-[#B86B35] transition-colors duration-200 shrink-0">
+                      {otherDish.price}
+                    </span>
+                  </button>
                 )}
               </div>
             </div>
@@ -106,9 +148,9 @@ export default function DishDetailModal({ dish, onClose, onReserveForDish }) {
               <button
                 onClick={() => {
                   onClose();
-                  if (onReserveForDish) onReserveForDish(dish);
+                  if (onReserveForDish) onReserveForDish(currentDish);
                 }}
-                className="w-full py-3 px-4 rounded-xl bg-[#B86B35] hover:bg-[#8F4918] text-white font-mono text-xs uppercase tracking-widest font-semibold transition-colors flex items-center justify-center gap-2 shadow-xs"
+                className="w-full py-3 px-4 rounded-xl bg-[#B86B35] hover:bg-[#8F4918] text-white font-mono text-xs uppercase tracking-widest font-semibold transition-colors flex items-center justify-center gap-2 shadow-xs cursor-pointer"
               >
                 <Utensils size={14} />
                 <span>Reserve Table to Taste This</span>

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Sparkles, Eye, ArrowUpRight } from "lucide-react";
+import { Sparkles, Eye, ArrowUpRight, Wine } from "lucide-react";
 import DietaryBadges, { VegSymbol, NonVegSymbol } from "./DietaryBadges";
 
 export default function MenuSection({
@@ -282,10 +282,19 @@ export default function MenuSection({
                   "{hoveredDish.flavor}"
                 </p>
                 <div className="pt-1.5 border-t border-[#EAE1D5] flex justify-between items-center font-mono text-[10px] text-[#7E6B60]">
-                  <span>Pair: <strong className="text-[#B86B35]">{hoveredDish.pair}</strong></span>
+                  {hoveredDish.pair ? (
+                    <button
+                      type="button"
+                      onClick={() => onSelectDish({ ...hoveredDish, openPairFirst: true })}
+                      className="group/pair text-left flex items-center gap-1.5 hover:text-[#B86B35] transition-colors duration-200 cursor-pointer"
+                    >
+                      <Wine size={12} className="text-[#B86B35] shrink-0" />
+                      <span>Pair with: <strong className="text-[#2B1B17] group-hover/pair:text-[#B86B35] font-serif transition-colors duration-200">{hoveredDish.pair}</strong></span>
+                    </button>
+                  ) : <span />}
                   <button
                     onClick={() => onSelectDish(hoveredDish)}
-                    className="text-[#B86B35] hover:underline flex items-center gap-0.5 cursor-pointer font-medium"
+                    className="text-[#8C7769] hover:text-[#B86B35] transition-colors duration-200 flex items-center gap-0.5 cursor-pointer font-medium shrink-0 ml-2"
                   >
                     <span>Inspect</span>
                     <ArrowUpRight size={11} />
