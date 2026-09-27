@@ -1,8 +1,11 @@
 import React from "react";
 import { X, Utensils, Wine } from "lucide-react";
+import DietaryBadges, { VegSymbol, NonVegSymbol } from "./DietaryBadges";
 
 export default function DishDetailModal({ dish, onClose, onReserveForDish }) {
   if (!dish) return null;
+
+  const isNonVeg = dish.tags?.includes("nonveg") || dish.diet === "Non-Veg" || dish.diet === "Seafood";
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 overflow-y-auto">
@@ -21,7 +24,7 @@ export default function DishDetailModal({ dish, onClose, onReserveForDish }) {
         <button
           onClick={onClose}
           aria-label="Close dialog"
-          className="absolute top-4 right-4 z-20 w-8 h-8 rounded-full bg-white hover:bg-[#B86B35] text-[#2B1B17] hover:text-white flex items-center justify-center transition-colors border border-[#EAE1D5] shadow-xs"
+          className="absolute top-4 right-4 z-20 w-8 h-8 rounded-full bg-white hover:bg-[#B86B35] text-[#2B1B17] hover:text-white flex items-center justify-center transition-colors border border-[#EAE1D5] shadow-xs cursor-pointer"
         >
           <X size={16} />
         </button>
@@ -34,8 +37,9 @@ export default function DishDetailModal({ dish, onClose, onReserveForDish }) {
               alt={dish.name}
               className="w-full h-full object-cover object-center"
             />
-            <div className="absolute top-4 left-4 font-mono text-[10px] tracking-wider uppercase bg-white/90 backdrop-blur-sm text-[#B86B35] px-2.5 py-1 rounded-full font-semibold shadow-2xs border border-[#EAE1D5]">
-              {dish.diet || "Italian Special"}
+            {/* Dietary Tags Overlay */}
+            <div className="absolute top-4 left-4 flex flex-wrap gap-1.5 z-10 bg-white/90 backdrop-blur-sm p-1.5 rounded-xl border border-[#EAE1D5] shadow-2xs">
+              <DietaryBadges tags={dish.tags} diet={dish.diet} showLabels={true} />
             </div>
             {dish.calories && (
               <div className="absolute bottom-4 left-4 font-mono text-[10px] tracking-wider text-[#4A3B34] bg-white/90 backdrop-blur-sm px-2.5 py-1 rounded-full border border-[#EAE1D5]">
@@ -47,12 +51,18 @@ export default function DishDetailModal({ dish, onClose, onReserveForDish }) {
           {/* Dish Information */}
           <div className="md:col-span-6 p-6 sm:p-7 flex flex-col justify-between space-y-4">
             <div className="space-y-3">
-              <h3 className="font-serif text-2xl sm:text-3xl text-[#2B1B17] leading-snug">
-                {dish.name}
-              </h3>
+              <div className="flex items-center gap-2">
+                {isNonVeg ? <NonVegSymbol /> : <VegSymbol />}
+                <h3 className="font-serif text-2xl sm:text-3xl text-[#2B1B17] leading-snug">
+                  {dish.name}
+                </h3>
+              </div>
 
-              <div className="font-mono text-lg text-[#B86B35] font-semibold">
-                {dish.price}
+              <div className="flex items-center justify-between">
+                <span className="font-mono text-lg text-[#B86B35] font-semibold">
+                  {dish.price}
+                </span>
+                <DietaryBadges tags={dish.tags?.filter(t => t !== "veg" && t !== "nonveg")} />
               </div>
 
               {/* Ingredients & Flavor Profile */}

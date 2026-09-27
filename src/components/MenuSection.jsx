@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Sparkles, Eye, ArrowUpRight } from "lucide-react";
+import DietaryBadges, { VegSymbol, NonVegSymbol } from "./DietaryBadges";
 
 export default function MenuSection({
   menu,
@@ -9,6 +10,7 @@ export default function MenuSection({
   menuRef,
 }) {
   const [activeCategory, setActiveCategory] = useState("appetizers");
+  const [selectedTag, setSelectedTag] = useState("all");
   const [hoveredDish, setHoveredDish] = useState(menu.appetizers[0]);
 
   const categories = [
@@ -17,6 +19,16 @@ export default function MenuSection({
     { key: "pasta", label: "Handmade Pasta" },
     { key: "secondi", label: "Main Course" },
     { key: "desserts", label: "Desserts" },
+  ];
+
+  const dietaryFilters = [
+    { key: "all", label: "ALL DISHES" },
+    { key: "veg", label: "🟢 VEG" },
+    { key: "nonveg", label: "🔴 NON-VEG" },
+    { key: "gluten-free", label: "GLUTEN-FREE" },
+    { key: "keto", label: "KETO" },
+    { key: "seafood", label: "SEAFOOD" },
+    { key: "spicy", label: "🌶️ SPICY" },
   ];
 
   // Preload all menu images into memory on initial mount
@@ -33,7 +45,18 @@ export default function MenuSection({
     });
   }, [menu]);
 
-  const currentItems = menu[activeCategory] || [];
+  const rawItems = menu[activeCategory] || [];
+  
+  const currentItems = rawItems.filter((dish) => {
+    if (selectedTag === "all") return true;
+    if (selectedTag === "veg") {
+      return dish.tags?.includes("veg") || dish.diet === "Vegetarian";
+    }
+    if (selectedTag === "nonveg") {
+      return dish.tags?.includes("nonveg") || dish.diet === "Non-Veg" || dish.diet === "Seafood";
+    }
+    return dish.tags?.includes(selectedTag);
+  });
 
   const handleCategoryChange = (key) => {
     setActiveCategory(key);
@@ -63,8 +86,8 @@ export default function MenuSection({
         </p>
       </div>
 
-      {/* Category Tabs - Compact Margins */}
-      <div className="flex flex-wrap justify-center gap-1.5 sm:gap-2 mb-8">
+      {/* Category Tabs */}
+      <div className="flex flex-wrap justify-center gap-1.5 sm:gap-2 mb-4">
         {categories.map((cat) => (
           <button
             key={cat.key}
@@ -80,6 +103,26 @@ export default function MenuSection({
         ))}
       </div>
 
+      {/* Dietary Filter Chips */}
+      <div className="flex flex-wrap justify-center items-center gap-1.5 mb-7 text-[10px] font-mono">
+        <span className="text-[#8C7769] tracking-wider uppercase mr-1 hidden sm:inline">
+          Filter:
+        </span>
+        {dietaryFilters.map((df) => (
+          <button
+            key={df.key}
+            onClick={() => setSelectedTag(df.key)}
+            className={`py-1 px-2.5 rounded-full border transition-all cursor-pointer ${
+              selectedTag === df.key
+                ? "bg-[#2B1B17] text-white border-[#2B1B17] font-semibold"
+                : "bg-white/80 text-[#7E6B60] border-[#EAE1D5] hover:border-[#B86B35] hover:text-[#B86B35]"
+            }`}
+          >
+            {df.label}
+          </button>
+        ))}
+      </div>
+
       {/* Dual Layout: Left Dotted-Leader List & Right Live Visual Preview */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
         
@@ -91,61 +134,119 @@ export default function MenuSection({
           </div>
 
           <div className="space-y-2">
-            {currentItems.map((dish) => {
-              const isSelected = hoveredDish?.id === dish.id;
-
-              return (
-                <div
-                  key={dish.id}
-                  onMouseEnter={() => setHoveredDish(dish)}
-                  onClick={() => {
-                    setHoveredDish(dish);
-                    onSelectDish(dish);
-                  }}
-                  className={`group relative p-2.5 rounded-xl cursor-pointer transition-all duration-150 border flex items-center gap-3 ${
-                    isSelected
-                      ? "bg-white border-[#B86B35]/40 shadow-2xs"
-                      : "border-transparent hover:bg-white/70 hover:border-[#EAE1D5]"
-                  }`}
+            {currentItems.length === 0 ? (
+              <div className="p-8 text-center bg-white/60 rounded-xl border border-dashed border-[#D8CCC0] space-y-2">
+                <p className="text-sm font-serif text-[#2B1B17]">
+                  No dishes found matching this filter in {categories.find(c => c.key === activeCategory)?.label}.
+                </p>
+                <button
+                  onClick={() => setSelectedTag("all")}
+                  className="text-xs font-mono text-[#B86B35] underline cursor-pointer"
                 >
-                  {/* Inline Thumbnail for Instant Visual Feedback */}
-                  <div className="w-11 h-11 rounded-lg overflow-hidden shrink-0 bg-[#F5EFEB] border border-[#EAE1D5]">
-                    <img
-                      src={dish.img}
-                      alt={dish.name}
-                      className="w-full h-full object-cover"
-                      loading="eager"
-                    />
-                  </div>
+                  Show all dishes in this category
+                </button>
+              </div>
+            ) : (
+              currentItems.map((dish) => {
+                const isSelected = hoveredDish?.id === dish.id;
+                const isNonVeg = dish.tags?.includes("nonveg") || dish.diet === "Non-Veg" || dish.diet === "Seafood";
 
-                  <div className="flex-grow min-w-0">
-                    <div className="flex items-baseline justify-between gap-2">
-                      <span
-                        className={`font-serif text-base sm:text-lg transition-colors truncate ${
-                          isSelected ? "text-[#B86B35]" : "text-[#2B1B17] group-hover:text-[#B86B35]"
-                        }`}
-                      >
-                        {dish.name}
-                      </span>
-
-                      {/* Classic Dotted Leader */}
-                      <span className="flex-grow mx-2 border-b border-dotted border-[#D8CCC0] group-hover:border-[#B86B35]/50 transition-colors hidden sm:inline" />
-
-                      <span className="font-mono text-sm font-semibold text-[#2B1B17] group-hover:text-[#B86B35] whitespace-nowrap">
-                        {dish.price}
-                      </span>
+                return (
+                  <div
+                    key={dish.id}
+                    onMouseEnter={() => setHoveredDish(dish)}
+                    onClick={() => {
+                      setHoveredDish(dish);
+                      onSelectDish(dish);
+                    }}
+                    className={`group relative p-2.5 rounded-xl cursor-pointer transition-all duration-150 border flex items-center gap-3 ${
+                      isSelected
+                        ? "bg-white border-[#B86B35]/40 shadow-2xs"
+                        : "border-transparent hover:bg-white/70 hover:border-[#EAE1D5]"
+                    }`}
+                  >
+                    {/* Inline Thumbnail for Instant Visual Feedback */}
+                    <div className="w-11 h-11 rounded-lg overflow-hidden shrink-0 bg-[#F5EFEB] border border-[#EAE1D5]">
+                      <img
+                        src={dish.img}
+                        alt={dish.name}
+                        className="w-full h-full object-cover"
+                        loading="eager"
+                      />
                     </div>
 
-                    <div className="flex justify-between items-center text-[11px] text-[#7E6B60] font-light">
-                      <span className="line-clamp-1">{dish.ingredients}</span>
-                      <span className="font-mono text-[10px] text-[#B86B35] uppercase tracking-wider shrink-0 ml-2 hidden sm:inline group-hover:underline">
-                        [ DETAILS ↗ ]
-                      </span>
+                    <div className="flex-grow min-w-0">
+                      <div className="flex items-baseline justify-between gap-2">
+                        <div className="flex items-center gap-1.5 min-w-0">
+                          {/* Indian Standard Green / Red Dot Square */}
+                          {isNonVeg ? <NonVegSymbol /> : <VegSymbol />}
+                          
+                          <span
+                            className={`font-serif text-base sm:text-lg transition-colors truncate ${
+                              isSelected ? "text-[#B86B35]" : "text-[#2B1B17] group-hover:text-[#B86B35]"
+                            }`}
+                          >
+                            {dish.name}
+                          </span>
+
+                          {/* Extra dietary tags (GF, Keto, Seafood, Spicy) */}
+                          <div className="hidden sm:inline-flex items-center gap-1 ml-1 shrink-0">
+                            {dish.tags?.filter(t => t !== "veg" && t !== "nonveg").map((t) => {
+                              if (t === "spicy") {
+                                return (
+                                  <span key={t} className="text-[9px] font-mono px-1 py-0.5 rounded bg-red-50 text-red-700 border border-red-200">
+                                    🌶️ SPICY
+                                  </span>
+                                );
+                              }
+                              if (t === "gluten-free") {
+                                return (
+                                  <span key={t} className="text-[9px] font-mono px-1 py-0.5 rounded bg-[#F5EDE4] text-[#8C5835] border border-[#DFCBB9]">
+                                    GF
+                                  </span>
+                                );
+                              }
+                              if (t === "keto") {
+                                return (
+                                  <span key={t} className="text-[9px] font-mono px-1 py-0.5 rounded bg-[#EFEBF5] text-[#5D3D7A] border border-[#DACFE7]">
+                                    KETO
+                                  </span>
+                                );
+                              }
+                              if (t === "seafood") {
+                                return (
+                                  <span key={t} className="text-[9px] font-mono px-1 py-0.5 rounded bg-[#EBF3F5] text-[#2C6575] border border-[#CFDFE4]">
+                                    SEAFOOD
+                                  </span>
+                                );
+                              }
+                              return null;
+                            })}
+                          </div>
+                        </div>
+
+                        {/* Classic Dotted Leader */}
+                        <span className="flex-grow mx-2 border-b border-dotted border-[#D8CCC0] group-hover:border-[#B86B35]/50 transition-colors hidden sm:inline" />
+
+                        <span className="font-mono text-sm font-semibold text-[#2B1B17] group-hover:text-[#B86B35] whitespace-nowrap">
+                          {dish.price}
+                        </span>
+                      </div>
+
+                      <div className="flex justify-between items-center text-[11px] text-[#7E6B60] font-light mt-0.5">
+                        <span className="line-clamp-1">{dish.ingredients}</span>
+                        <div className="sm:hidden shrink-0 ml-2">
+                          <DietaryBadges tags={dish.tags?.filter(t => t !== "veg" && t !== "nonveg")} />
+                        </div>
+                        <span className="font-mono text-[10px] text-[#B86B35] uppercase tracking-wider shrink-0 ml-2 hidden sm:inline group-hover:underline">
+                          [ DETAILS ↗ ]
+                        </span>
+                      </div>
                     </div>
                   </div>
-                </div>
-              );
-            })}
+                );
+              })
+            )}
           </div>
 
           <div className="pt-2 text-[10px] font-mono text-[#8C7769] flex justify-between border-t border-[#EAE1D5]">
@@ -173,9 +274,12 @@ export default function MenuSection({
                   <span className="text-[10px] font-mono tracking-widest text-[#DFC2A5] uppercase block">
                     {hoveredDish?.calories}
                   </span>
-                  <span className="font-serif text-base font-medium">
+                  <span className="font-serif text-base font-medium block">
                     {hoveredDish?.name}
                   </span>
+                  <div className="mt-1">
+                    <DietaryBadges tags={hoveredDish?.tags} diet={hoveredDish?.diet} showLabels={true} />
+                  </div>
                 </div>
                 <button
                   onClick={() => onSelectDish(hoveredDish)}

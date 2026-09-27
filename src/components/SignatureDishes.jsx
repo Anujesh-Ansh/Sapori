@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { ArrowUpRight } from "lucide-react";
+import DietaryBadges, { VegSymbol, NonVegSymbol } from "./DietaryBadges";
 
 export default function SignatureDishes({ signatures, onSelectDish }) {
   const [activeIdx, setActiveIdx] = useState(0);
@@ -24,33 +25,43 @@ export default function SignatureDishes({ signatures, onSelectDish }) {
 
       {/* 3 Side-by-Side Cards (Layout of Wireframe 5) */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
-        {signatures.map((sig, idx) => (
-          <div
-            key={sig.id}
-            onClick={() => {
-              setActiveIdx(idx);
-              onSelectDish(sig);
-            }}
-            className="cursor-pointer rounded-2xl overflow-hidden bg-white border border-[#EAE1D5] hover:border-[#B86B35] transition-all duration-200 group hover:-translate-y-1 shadow-xs hover:shadow-sm"
-          >
-            <div className="relative aspect-[4/3] overflow-hidden bg-[#F5EFEB]">
-              <img
-                src={sig.img}
-                alt={sig.title}
-                className="w-full h-full object-cover group-hover:scale-104 transition-transform duration-300"
-              />
-              <div className="absolute top-2.5 left-2.5 bg-[#2B1B17]/85 backdrop-blur-sm text-[9px] font-mono tracking-widest text-[#DFC2A5] px-2 py-0.5 rounded-full uppercase font-medium">
-                {sig.category}
-              </div>
-            </div>
+        {signatures.map((sig, idx) => {
+          const isNonVeg = sig.tags?.includes("nonveg") || sig.diet === "Non-Veg";
 
-            <div className="p-4 space-y-2">
-              <h4 className="font-serif text-lg text-[#2B1B17] group-hover:text-[#B86B35] transition-colors leading-snug">
-                {sig.title}
-              </h4>
-              <p className="text-xs text-[#5C4A3E] line-clamp-2 font-light leading-relaxed">
-                {sig.desc}
-              </p>
+          return (
+            <div
+              key={sig.id}
+              onClick={() => {
+                setActiveIdx(idx);
+                onSelectDish(sig);
+              }}
+              className="cursor-pointer rounded-2xl overflow-hidden bg-white border border-[#EAE1D5] hover:border-[#B86B35] transition-all duration-200 group hover:-translate-y-1 shadow-xs hover:shadow-sm"
+            >
+              <div className="relative aspect-[4/3] overflow-hidden bg-[#F5EFEB]">
+                <img
+                  src={sig.img}
+                  alt={sig.title}
+                  className="w-full h-full object-cover group-hover:scale-104 transition-transform duration-300"
+                />
+                <div className="absolute top-2.5 left-2.5 bg-[#2B1B17]/85 backdrop-blur-sm text-[9px] font-mono tracking-widest text-[#DFC2A5] px-2 py-0.5 rounded-full uppercase font-medium">
+                  {sig.category}
+                </div>
+              </div>
+
+              <div className="p-4 space-y-2">
+                <div className="flex items-center justify-between gap-2">
+                  <div className="flex items-center gap-1.5 min-w-0">
+                    {isNonVeg ? <NonVegSymbol /> : <VegSymbol />}
+                    <h4 className="font-serif text-lg text-[#2B1B17] group-hover:text-[#B86B35] transition-colors leading-snug truncate">
+                      {sig.title}
+                    </h4>
+                  </div>
+                  <DietaryBadges tags={sig.tags?.filter(t => t !== "veg" && t !== "nonveg")} />
+                </div>
+
+                <p className="text-xs text-[#5C4A3E] line-clamp-2 font-light leading-relaxed">
+                  {sig.desc}
+                </p>
 
               <div className="flex justify-between items-center pt-2.5 border-t border-[#EAE1D5]">
                 <span className="font-mono text-sm font-semibold text-[#B86B35]">
@@ -63,8 +74,9 @@ export default function SignatureDishes({ signatures, onSelectDish }) {
               </div>
             </div>
           </div>
-        ))}
-      </div>
-    </section>
-  );
+        );
+      })}
+    </div>
+  </section>
+);
 }
