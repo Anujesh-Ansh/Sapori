@@ -19,15 +19,18 @@ export default function MenuSection({
     { key: "pasta", label: "Handmade Pasta" },
     { key: "secondi", label: "Main Course" },
     { key: "desserts", label: "Desserts" },
+    { key: "cocktails", label: "Cocktails & Bar" },
   ];
 
   const dietaryFilters = [
     { key: "all", label: "ALL DISHES" },
     { key: "veg", label: "🟢 VEG" },
     { key: "nonveg", label: "🔴 NON-VEG" },
-    { key: "gluten-free", label: "GLUTEN-FREE" },
-    { key: "keto", label: "KETO" },
-    { key: "seafood", label: "SEAFOOD" },
+    { key: "vegan", label: "🌱 VEGAN" },
+    { key: "gluten-free", label: "🌾 GLUTEN-FREE" },
+    { key: "seafood", label: "🐟 SEAFOOD" },
+    { key: "egg", label: "🥚 EGG" },
+    { key: "keto", label: "🥑 KETO" },
     { key: "spicy", label: "🌶️ SPICY" },
   ];
 
@@ -50,10 +53,16 @@ export default function MenuSection({
   const currentItems = rawItems.filter((dish) => {
     if (selectedTag === "all") return true;
     if (selectedTag === "veg") {
-      return dish.tags?.includes("veg") || dish.diet === "Vegetarian";
+      return dish.tags?.includes("veg") || dish.tags?.includes("vegan") || dish.diet === "Vegetarian";
     }
     if (selectedTag === "nonveg") {
       return dish.tags?.includes("nonveg") || dish.diet === "Non-Veg" || dish.diet === "Seafood";
+    }
+    if (selectedTag === "vegan") {
+      return dish.tags?.includes("vegan");
+    }
+    if (selectedTag === "egg") {
+      return dish.tags?.includes("egg");
     }
     return dish.tags?.includes(selectedTag);
   });
@@ -189,39 +198,12 @@ export default function MenuSection({
                             {dish.name}
                           </span>
 
-                          {/* Extra dietary tags (GF, Keto, Seafood, Spicy) */}
-                          <div className="hidden sm:inline-flex items-center gap-1 ml-1 shrink-0">
-                            {dish.tags?.filter(t => t !== "veg" && t !== "nonveg").map((t) => {
-                              if (t === "spicy") {
-                                return (
-                                  <span key={t} className="text-[9px] font-mono px-1 py-0.5 rounded bg-red-50 text-red-700 border border-red-200">
-                                    🌶️ SPICY
-                                  </span>
-                                );
-                              }
-                              if (t === "gluten-free") {
-                                return (
-                                  <span key={t} className="text-[9px] font-mono px-1 py-0.5 rounded bg-[#F5EDE4] text-[#8C5835] border border-[#DFCBB9]">
-                                    GF
-                                  </span>
-                                );
-                              }
-                              if (t === "keto") {
-                                return (
-                                  <span key={t} className="text-[9px] font-mono px-1 py-0.5 rounded bg-[#EFEBF5] text-[#5D3D7A] border border-[#DACFE7]">
-                                    KETO
-                                  </span>
-                                );
-                              }
-                              if (t === "seafood") {
-                                return (
-                                  <span key={t} className="text-[9px] font-mono px-1 py-0.5 rounded bg-[#EBF3F5] text-[#2C6575] border border-[#CFDFE4]">
-                                    SEAFOOD
-                                  </span>
-                                );
-                              }
-                              return null;
-                            })}
+                          {/* Extra dietary tags (Gluten-Free, Keto, Seafood, Egg, Vegan, Spicy) */}
+                          <div className="hidden sm:inline-flex items-center gap-1 ml-1.5 shrink-0">
+                            <DietaryBadges
+                              tags={dish.tags?.filter(t => t !== "veg" && t !== "nonveg")}
+                              excludeVegSymbols={true}
+                            />
                           </div>
                         </div>
 
@@ -236,7 +218,10 @@ export default function MenuSection({
                       <div className="flex justify-between items-center text-[11px] text-[#7E6B60] font-light mt-0.5">
                         <span className="line-clamp-1">{dish.ingredients}</span>
                         <div className="sm:hidden shrink-0 ml-2">
-                          <DietaryBadges tags={dish.tags?.filter(t => t !== "veg" && t !== "nonveg")} />
+                          <DietaryBadges
+                            tags={dish.tags?.filter(t => t !== "veg" && t !== "nonveg")}
+                            excludeVegSymbols={true}
+                          />
                         </div>
                         <span className="font-mono text-[10px] text-[#B86B35] uppercase tracking-wider shrink-0 ml-2 hidden sm:inline group-hover:underline">
                           [ DETAILS ↗ ]
