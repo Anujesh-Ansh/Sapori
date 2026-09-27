@@ -32,6 +32,7 @@ export const restaurantData = {
         img: "/images/burrata.jpg",
         ingredients: "Ripened Tomatoes, Fresh Rucola, Black Mission Figs, Basil Pesto, EVOO",
         flavor: "Creamy lactic sweetness balanced by fresh herb acid and balsamic glaze.",
+        palate: "Light, refreshing Italian starter for cheese purists.",
         pair: "Castello Banfi Le Rime (₹1,750)"
       },
       {
@@ -43,6 +44,7 @@ export const restaurantData = {
         img: "/images/fritto_misto.jpg",
         ingredients: "Crisp Baby Calamari, Tiger Prawns, Soft Shell Crab, Amalfi Lemon Mayo",
         flavor: "Feather-light golden crunch with ocean brininess and citrus punch.",
+        palate: "Crispy seafood lovers seeking ocean freshness.",
         pair: "Peroni Nastro Azzurro / Civ & Civ"
       },
       {
@@ -53,7 +55,8 @@ export const restaurantData = {
         diet: "Vegetarian",
         img: "/images/quinoa_salad.jpg",
         ingredients: "Organic Andean Quinoa, Avocado, Toasted Hazelnut, Baby Tuscan Kale",
-        flavor: "Nutty, crisp, refreshing with lemon-herb emulsion.",
+        flavor: "Nutty, crisp, refreshing with citrus-herb vinaigrette.",
+        palate: "Health-conscious gourmands wanting a light, crunchy plate.",
         pair: "Principesco Pinot Grigio (₹1,550)"
       },
       {
@@ -65,6 +68,7 @@ export const restaurantData = {
         img: "/images/minestrone.jpg",
         ingredients: "Conserve Style Broth, Seasonal Italian Garden Vegetables, Basil Genovese Pesto",
         flavor: "Deep aromatic vegetable broth with fragrant herb finish.",
+        palate: "Traditional soup lovers craving warm Italian rustic comfort.",
         pair: "Civ & Civ (₹1,650)"
       },
       {
@@ -75,7 +79,8 @@ export const restaurantData = {
         diet: "Seafood",
         img: "/images/zuppa_di_mare.jpg",
         ingredients: "San Marzano Broth, Chili Prawns, Tender Scallops, Garlic Bruschetta",
-        flavor: "Rich seafood tomato bouillon with gentle chili warmth.",
+        flavor: "Rich seafood tomato bouillon with gentle chili warmth and garlic crunch.",
+        palate: "Seafood lovers wanting a hearty, spicy Mediterranean broth.",
         pair: "Castello Banfi Le Rime (₹1,750)"
       }
     ],
@@ -90,6 +95,7 @@ export const restaurantData = {
         img: "/images/margherita.jpg",
         ingredients: "450°C Wood-Fired Crust, San Marzano DOP, Campana Mozzarella, Fresh Basil, EVOO",
         flavor: "Smoky wood-fired blister, sweet tomato acid, melted mozzarella velvet.",
+        palate: "Purist pizza lovers who value authentic Neapolitan crust and fresh basil.",
         pair: "Castello Banfi Chianti (₹1,750)"
       },
       {
@@ -100,7 +106,8 @@ export const restaurantData = {
         diet: "Vegetarian",
         img: "/images/ortolana.jpg",
         ingredients: "Tomato Sauce, Fior di Latte, Grilled Bell Peppers, Red Onion, Mushrooms, Asparagus",
-        flavor: "Charred sweet garden vegetables with herb-infused olive oil.",
+        flavor: "Charred sweet garden vegetables with herb-infused olive oil and melted cheese.",
+        palate: "Vegetarian diners desiring colorful, earthy wood-charred toppings.",
         pair: "Principesco (₹1,550)"
       },
       {
@@ -111,7 +118,8 @@ export const restaurantData = {
         diet: "Non-Veg",
         img: "/images/italiana.jpg",
         ingredients: "Tomato Sauce, Fresh Mozzarella, Anchovies, Ricotta Cheese, Wild Rocket Leaves",
-        flavor: "Briny savory anchovies balanced with creamy ricotta and peppery rocket.",
+        flavor: "Briny savory anchovies balanced with creamy ricotta and peppery wild rocket.",
+        palate: "Bold palate diners who appreciate savory Mediterranean seafood notes.",
         pair: "Classic Negroni (₹950)"
       },
       {
@@ -122,7 +130,8 @@ export const restaurantData = {
         diet: "Vegetarian",
         img: "/images/focaccia.jpg",
         ingredients: "Sea Salt Rosemary Focaccia, Blistered Cherry Tomatoes, Wild Mountain Oregano, EVOO",
-        flavor: "Crisp crust, airy crumb, fragrant rosemary and olive oil perfume.",
+        flavor: "Crisp golden crust, airy crumb, fragrant rosemary and olive oil perfume.",
+        palate: "Ideal table starter to pair with wine and aperitivos.",
         pair: "Aperol Spritz (₹1,200)"
       }
     ],
@@ -137,6 +146,7 @@ export const restaurantData = {
         img: "/images/bottoni.jpg",
         ingredients: "Handmade Raviolini Pillows, Mountain Fontina Fondue, Leeks, Browned Sage Butter",
         flavor: "Velvety molten cheese center with nutty browned butter and sweet leeks.",
+        palate: "Handmade artisanal pasta lovers who adore rich cheese fondue.",
         pair: "Civ & Civ (₹1,650)"
       },
       {
@@ -147,7 +157,8 @@ export const restaurantData = {
         diet: "Vegetarian",
         img: "/images/tagliatelle.jpg",
         ingredients: "Egg Ribbon Tagliatelle, Shaved Norcia Black Truffles, Vacche Rosse Parmigiano Reggiano",
-        flavor: "Opulent forest truffle perfume with rich golden egg yolk coating.",
+        flavor: "Opulent forest truffle perfume with rich golden egg yolk coating and aged cheese umami.",
+        palate: "Truffle connoisseurs desiring luxury decadence.",
         pair: "Castello Banfi (₹1,750)"
       },
       {
@@ -158,7 +169,8 @@ export const restaurantData = {
         diet: "Vegetarian",
         img: "/images/gnocchi.jpg",
         ingredients: "Handmade Potato Pillows, Slow San Marzano Pomodoro, Pulled Fior di Latte, Basil",
-        flavor: "Melt-in-mouth pillow texture wrapped in sweet tomato comfort.",
+        flavor: "Melt-in-mouth pillow texture wrapped in sweet tomato comfort and molten mozzarella.",
+        palate: "Diners craving cozy, warm, comforting Southern Italian warmth.",
         pair: "Berry Yuzu Fizz (₹450)"
       },
       {
@@ -169,7 +181,8 @@ export const restaurantData = {
         diet: "Vegetarian",
         img: "/images/spaghetti.jpg",
         ingredients: "Bronze-Die Extruded Spaghetti, Confit Garlic, Calabrian Chili, Cold Pressed EVOO, Parsley",
-        flavor: "Silky emulsified olive oil sheen with piquant chili warmth and garlic aroma.",
+        flavor: "Silky emulsified olive oil sheen with piquant chili warmth and aromatic confit garlic.",
+        palate: "Classic Italian purists who appreciate the elegance of simple perfection.",
         pair: "Principesco (₹1,550)"
       }
     ],
@@ -183,7 +196,8 @@ export const restaurantData = {
         diet: "Vegetarian",
         img: "/images/parmigiana.jpg",
         ingredients: "Baked Violet Eggplant, Slow San Marzano Pomodoro, Buffalo Mozzarella, Fresh Basil",
-        flavor: "Savory baked umami with melting cheese crust and herbal sweetness.",
+        flavor: "Savory baked umami with melting cheese crust, sweet basil, and rich tomato sauce.",
+        palate: "Vegetarian comfort food lovers looking for a hearty, baked main course.",
         pair: "Civ & Civ (₹1,650)"
       },
       {
@@ -195,6 +209,7 @@ export const restaurantData = {
         img: "/images/risotto.jpg",
         ingredients: "Golden Saffron Risotto Cake, Fontina Fondue, Pan-Roasted Oyster Mushrooms, Leeks",
         flavor: "Delicate saffron fragrance with crisp golden crust and creamy fondue core.",
+        palate: "Artisanal risotto lovers who appreciate Milanese crispy technique.",
         pair: "Castello Banfi Le Rime (₹1,750)"
       },
       {
@@ -206,6 +221,7 @@ export const restaurantData = {
         img: "/images/agnello.jpg",
         ingredients: "Roasted New Zealand Lamb Loin, Natural Herb Jus, Artichokes, Velvet Mashed Potatoes",
         flavor: "Tender roasted lamb loin, gelatinous herb reduction, and silky artichoke puree.",
+        palate: "Meat connoisseurs seeking fall-off-the-bone slow-braised richness.",
         pair: "Castello Banfi (₹1,750)"
       },
       {
@@ -217,6 +233,7 @@ export const restaurantData = {
         img: "/images/valdostana.jpg",
         ingredients: "Corn-fed Chicken Breast, Melted Alpine Fontina, Shaved Black Truffles, Onion Potatoes",
         flavor: "Succulent poultry glazed in nutty cheese fondue and earthy truffle aroma.",
+        palate: "Diners seeking a luxurious, cheese-crusted Alpine specialty.",
         pair: "Castello Banfi (₹1,750)"
       }
     ],
@@ -230,7 +247,8 @@ export const restaurantData = {
         diet: "Vegetarian",
         img: "/images/tiramisu.jpg",
         ingredients: "Savoiardi Ladyfingers, Roasted Illy Espresso, Mascarpone Sabayon, Dutch Valrhona Cocoa",
-        flavor: "Velvety bittersweet espresso cream with cloud-soft texture.",
+        flavor: "Velvety bittersweet espresso cream with cloud-soft texture and rich chocolate dust.",
+        palate: "The definitive Italian sweet finale for coffee and dessert lovers.",
         pair: "Italian Espresso / Vin Santo"
       },
       {
@@ -241,40 +259,59 @@ export const restaurantData = {
         diet: "Vegetarian",
         img: "/images/pannacotta.jpg",
         ingredients: "Madagascar Vanilla Bean Cream, Macerated Forest Berry Coulis, Micro Mint",
-        flavor: "Silky, delicate vanilla custard with tart berry contrast.",
+        flavor: "Silky, delicate vanilla custard with tart berry contrast and floral sweetness.",
+        palate: "Guests seeking a cool, light, elegant fruit-and-cream finish.",
         pair: "Amalfi Classic Mocktail (₹450)"
       }
     ]
   },
 
-  // 3 Signature Dishes (Instant local images)
+  // 3 Signature Dishes (Complete tasting notes for modal dialogs)
   signatures: [
     {
       id: "margherita",
+      name: "Signature Woodfire Margherita",
       title: "Signature Margherita",
       category: "WOOD FIRE OVEN",
       price: "₹1,150",
+      calories: "480 kcal",
+      diet: "Vegetarian",
       desc: "450°C wood-fired blistered crust with San Marzano DOP tomatoes and fresh Campana buffalo mozzarella.",
       img: "/images/margherita.jpg",
-      pair: "Castello Banfi Chianti"
+      ingredients: "Caputo 00 Flour, San Marzano DOP Tomatoes, Fresh Buffalo Mozzarella, Sweet Basil, EVOO",
+      flavor: "Smoky wood-fired blister, sweet volcanic tomato acidity, and melted dairy sweetness.",
+      palate: "Neapolitan pizza purists and lovers of Italian simplicity.",
+      pair: "Castello Banfi Chianti (₹1,750)"
     },
     {
       id: "bottoni",
+      name: "Handcrafted Bottoni al Salto",
       title: "Handcrafted Bottoni",
       category: "PASTA FRESCA",
       price: "₹1,450",
+      calories: "490 kcal",
+      diet: "Vegetarian",
       desc: "Hand-pinched pasta pillows stuffed with mountain fontina, glazed in leek fondue and crisp sage butter.",
       img: "/images/bottoni.jpg",
-      pair: "Civ & Civ Red"
+      ingredients: "Hand-rolled Silk Pasta, Alpine Fontina Cheese, Sweet Leek Fondue, Browned Sage Butter",
+      flavor: "Burst of warm molten alpine fontina wrapped in nutty sage butter and sweet leeks.",
+      palate: "Artisanal pasta enthusiasts seeking rich, delicate handcrafted pillows.",
+      pair: "Civ & Civ Red (₹1,650)"
     },
     {
       id: "agnello",
+      name: "Agnello Brasato al Rosmarino",
       title: "Agnello Brasato",
       category: "SECONDI",
       price: "₹2,750",
+      calories: "760 kcal",
+      diet: "Non-Veg",
       desc: "Roasted New Zealand lamb loin, natural rosemary jus, braised artichokes, and velvet mashed potatoes.",
       img: "/images/agnello.jpg",
-      pair: "Castello Banfi Reserve"
+      ingredients: "Prime New Zealand Lamb Loin, 12-Hour Natural Rosemary Glaze, Braised Artichokes, Mashed Potatoes",
+      flavor: "Deep fall-apart savory lamb loin reduction, fragrant rosemary herb notes, and silky mash.",
+      palate: "Connoisseurs desiring slow-braised, melt-in-mouth culinary craftsmanship.",
+      pair: "Castello Banfi Reserve (₹1,750)"
     }
   ],
 
