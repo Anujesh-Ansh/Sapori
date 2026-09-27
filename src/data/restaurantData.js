@@ -179,7 +179,7 @@ export const restaurantData = {
         calories: "620 kcal",
         diet: "Non-Veg",
         tags: ["nonveg", "egg"],
-        img: "/images/pappardelle_ragu.jpg",
+        img: "/images/pappardelle_ragu.jpeg",
         ingredients: "Hand-Cut Silk Ribbon Pappardelle, 8-Hour Chianti Braised Lamb Ragù, Aged Pecorino Romano",
         flavor: "Rich, slow-simmered savory braised lamb coating delicate wide ribbon egg pasta.",
         palate: "Hearty pasta lovers seeking deep, comforting Tuscan meat sauce richness.",
