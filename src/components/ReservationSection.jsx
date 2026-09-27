@@ -147,7 +147,7 @@ export default function ReservationSection({ brand, preselectedDish }) {
               <input
                 required
                 type="tel"
-                placeholder="+91 98110 XXXXX"
+                placeholder="+91 95555 XXXXX"
                 value={phone}
                 onChange={(e) => setPhone(e.target.value)}
                 className="w-full bg-[#FBF9F5] border border-[#EAE1D5] rounded-lg px-3 py-2 text-[#2B1B17] font-mono text-xs focus:outline-none focus:border-[#B86B35]"

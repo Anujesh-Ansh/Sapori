@@ -4,10 +4,12 @@ const AmbianceContext = createContext(null);
 
 export function AmbianceProvider({ children }) {
   const [isPlaying, setIsPlaying] = useState(false);
+  const audioElemRef = useRef(null);
   const audioCtxRef = useRef(null);
   const isPlayingRef = useRef(false);
   const timerRef = useRef(null);
 
+  // Fallback Synthesizer: Gentle Italian Acoustic Guitar
   const playGuitarNote = (ctx, freq, time, duration = 1.4, volume = 0.16) => {
     try {
       if (!ctx || ctx.state === "closed") return;
@@ -63,30 +65,76 @@ export function AmbianceProvider({ children }) {
     playCycle();
   };
 
+  const startSynthesizerFallback = async () => {
+    try {
+      const AudioContext = window.AudioContext || window.webkitAudioContext;
+      if (!AudioContext) return;
+
+      let ctx = audioCtxRef.current;
+      if (!ctx || ctx.state === "closed") {
+        ctx = new AudioContext();
+        audioCtxRef.current = ctx;
+      }
+
+      if (ctx.state === "suspended") {
+        await ctx.resume();
+      }
+
+      startItalianMelody(ctx);
+    } catch (err) {
+      console.warn("Synthesizer fallback error:", err);
+    }
+  };
+
   const toggleSound = async () => {
     if (!isPlayingRef.current) {
+      isPlayingRef.current = true;
+      setIsPlaying(true);
+
       try {
-        const AudioContext = window.AudioContext || window.webkitAudioContext;
-        if (!AudioContext) return;
+        if (!audioElemRef.current) {
+          const audio = new Audio("/audio/rosia.m4a");
+          audio.loop = true;
+          audio.volume = 0.5;
+          
+          audio.addEventListener("error", () => {
+            console.warn("Audio file failed to load, switching to synthesizer fallback.");
+            if (isPlayingRef.current) {
+              startSynthesizerFallback();
+            }
+          });
 
-        let ctx = audioCtxRef.current;
-        if (!ctx || ctx.state === "closed") {
-          ctx = new AudioContext();
-          audioCtxRef.current = ctx;
+          audioElemRef.current = audio;
         }
 
-        if (ctx.state === "suspended") {
-          await ctx.resume();
+        const audio = audioElemRef.current;
+        // Immediate play call preserves user-gesture authorization on iOS Safari and mobile Chrome
+        const playPromise = audio.play();
+        if (playPromise !== undefined) {
+          playPromise.catch((err) => {
+            console.warn("Audio file play interrupted or not allowed, switching to synth fallback:", err);
+            if (isPlayingRef.current) {
+              startSynthesizerFallback();
+            }
+          });
         }
-
-        isPlayingRef.current = true;
-        setIsPlaying(true);
-        startItalianMelody(ctx);
       } catch (err) {
-        console.error("Ambiance activation failed:", err);
+        console.warn("Audio creation error:", err);
+        if (isPlayingRef.current) {
+          startSynthesizerFallback();
+        }
       }
     } else {
       isPlayingRef.current = false;
+      setIsPlaying(false);
+
+      // Stop audio element if playing
+      if (audioElemRef.current) {
+        audioElemRef.current.pause();
+        audioElemRef.current.currentTime = 0;
+      }
+
+      // Stop synth fallback if running
       if (timerRef.current) {
         clearTimeout(timerRef.current);
         timerRef.current = null;
@@ -95,14 +143,15 @@ export function AmbianceProvider({ children }) {
         audioCtxRef.current.close().catch(() => {});
         audioCtxRef.current = null;
       }
-      setIsPlaying(false);
     }
   };
 
-  // Clean up only when the entire App unmounts (e.g. page close)
   useEffect(() => {
     return () => {
       isPlayingRef.current = false;
+      if (audioElemRef.current) {
+        audioElemRef.current.pause();
+      }
       if (timerRef.current) clearTimeout(timerRef.current);
       if (audioCtxRef.current && audioCtxRef.current.state !== "closed") {
         audioCtxRef.current.close().catch(() => {});

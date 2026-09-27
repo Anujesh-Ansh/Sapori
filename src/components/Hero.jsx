@@ -33,7 +33,7 @@ export default function Hero({ brand, onReserve, onExploreMenu }) {
       <div className="w-full max-w-5xl my-4 relative z-10 px-2 sm:px-4 mx-auto">
         <div className="relative aspect-[16/9] sm:aspect-[21/9] overflow-hidden rounded-2xl border border-[#EAE1D5] shadow-md bg-white">
           <img
-            src="/images/hero_dining.jpg"
+            src="/images/home_page.jpeg"
             alt="Sapori d'Italia Intimate Fine Dining in Connaught Place"
             loading="eager"
             className="w-full h-full object-cover filter contrast-[103%]"
@@ -68,17 +68,6 @@ export default function Hero({ brand, onReserve, onExploreMenu }) {
               </button>
             </div>
           </div>
-        </div>
-
-        {/* Compact Credibility Triad directly under image */}
-        <div className="mt-3 pt-2.5 border-t border-[#EAE1D5] flex flex-wrap justify-center items-center gap-4 sm:gap-8 text-center text-[11px] font-mono text-[#5C4A3E]">
-          <span>3,200 SQ. FT. SPACE</span>
-          <span className="text-[#C88A58]">•</span>
-          <span>80 COVERS</span>
-          <span className="text-[#C88A58]">•</span>
-          <span>450°C WOOD-FIRED HEARTH</span>
-          <span className="text-[#C88A58]">•</span>
-          <span>OPEN 12 PM – MIDNIGHT</span>
         </div>
       </div>
 

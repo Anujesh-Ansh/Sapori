@@ -77,7 +77,7 @@ export default function ChefAndAwards({ chef, awards }) {
       </div>
 
       {/* 8 Awards Grid */}
-      <div className="p-4 sm:p-6 rounded-2xl bg-white border border-[#EAE1D5] shadow-2xs">
+      {/* <div className="p-4 sm:p-6 rounded-2xl bg-white border border-[#EAE1D5] shadow-2xs">
         <p className="text-center text-[10px] font-mono text-[#8C7769] tracking-widest uppercase mb-4">
           HONORS & CRITICAL PRESS RECOGNITION
         </p>
@@ -104,7 +104,7 @@ export default function ChefAndAwards({ chef, awards }) {
             </div>
           ))}
         </div>
-      </div>
+      </div> */}
 
     </section>
   );

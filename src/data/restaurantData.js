@@ -7,7 +7,7 @@ export const restaurantData = {
     location: "Connaught Place, New Delhi",
     address: "Atrium 4, Inner Circle, Block D, Connaught Place, New Delhi 110001",
     hours: "Open Daily: 12:00 PM – Midnight",
-    phone: "+91 98110 24411",
+    phone: "+91 95555 69018",
     email: "concierge@saporiditalia.in",
     instagram: "@saporiditalia.delhi",
     facebook: "SaporiDItaliaDelhi",
