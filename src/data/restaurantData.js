@@ -34,7 +34,7 @@ export const restaurantData = {
         ingredients: "Ripened Tomatoes, Fresh Rucola, Black Mission Figs, Basil Pesto, EVOO",
         flavor: "Creamy lactic sweetness balanced by fresh herb acid and balsamic glaze.",
         palate: "Light, refreshing Italian starter for cheese purists.",
-        pair: "Castello Banfi Le Rime (₹1,750)"
+        pair: "Aperol Spritz Veneziano (₹1,200)"
       },
       {
         id: "fritto",
@@ -47,7 +47,7 @@ export const restaurantData = {
         ingredients: "Crisp Baby Calamari, Tiger Prawns, Soft Shell Crab, Amalfi Lemon Mayo",
         flavor: "Feather-light golden crunch with ocean brininess and citrus punch.",
         palate: "Crispy seafood lovers seeking ocean freshness.",
-        pair: "Peroni Nastro Azzurro / Civ & Civ"
+        pair: "Peroni Nastro Azzurro (₹500)"
       },
       {
         id: "quinoa",
@@ -60,7 +60,7 @@ export const restaurantData = {
         ingredients: "Organic Andean Quinoa, Avocado, Toasted Hazelnut, Baby Tuscan Kale",
         flavor: "Nutty, crisp, refreshing with citrus-herb vinaigrette.",
         palate: "Health-conscious gourmands wanting a light, crunchy plate.",
-        pair: "Principesco Pinot Grigio (₹1,550)"
+        pair: "Principesco Pinot Grigio DOC (₹1,550)"
       },
       {
         id: "minestrone",
@@ -73,7 +73,7 @@ export const restaurantData = {
         ingredients: "Conserve Style Broth, Seasonal Italian Garden Vegetables, Basil Genovese Pesto",
         flavor: "Deep aromatic vegetable broth with fragrant herb finish.",
         palate: "Traditional soup lovers craving warm Italian rustic comfort.",
-        pair: "Civ & Civ (₹1,650)"
+        pair: "Soave Classico Pieropan DOC (₹1,600)"
       },
       {
         id: "zuppa",
@@ -86,7 +86,7 @@ export const restaurantData = {
         ingredients: "San Marzano Broth, Chili Prawns, Tender Scallops, Garlic Bruschetta",
         flavor: "Rich seafood tomato bouillon with gentle chili warmth and garlic crunch.",
         palate: "Seafood lovers wanting a hearty, spicy Mediterranean broth.",
-        pair: "Castello Banfi Le Rime (₹1,750)"
+        pair: "Classic Dry Martini (₹950)"
       }
     ],
 
@@ -102,7 +102,7 @@ export const restaurantData = {
         ingredients: "450°C Wood-Fired Crust, San Marzano DOP, Campana Mozzarella, Fresh Basil, EVOO",
         flavor: "Smoky wood-fired blister, sweet tomato acid, melted mozzarella velvet.",
         palate: "Purist pizza lovers who value authentic Neapolitan crust and fresh basil.",
-        pair: "Castello Banfi Chianti (₹1,750)"
+        pair: "Italian Margarita (₹950)"
       },
       {
         id: "ortolana",
@@ -115,7 +115,7 @@ export const restaurantData = {
         ingredients: "Tomato Sauce, Fior di Latte, Grilled Bell Peppers, Red Onion, Mushrooms, Asparagus",
         flavor: "Charred sweet garden vegetables with herb-infused olive oil and melted cheese.",
         palate: "Vegetarian diners desiring colorful, earthy wood-charred toppings.",
-        pair: "Principesco (₹1,550)"
+        pair: "Castello Banfi Le Rime IGT (₹1,750)"
       },
       {
         id: "diavola",
@@ -128,7 +128,7 @@ export const restaurantData = {
         ingredients: "San Marzano DOP, Spicy Calabrian Salame, Fior di Latte, Chili Honey, Sweet Basil",
         flavor: "Fiery smoky salami blister with molten cheese and a drizzle of sweet chili honey.",
         palate: "Meat lovers desiring authentic Italian spicy pepperoni heat.",
-        pair: "Castello Banfi Chianti (₹1,750)"
+        pair: "Primitivo di Manduria DOC (₹1,850)"
       },
       {
         id: "italiana",
@@ -141,7 +141,7 @@ export const restaurantData = {
         ingredients: "Tomato Sauce, Fresh Mozzarella, Anchovies, Ricotta Cheese, Wild Rocket Leaves",
         flavor: "Briny savory anchovies balanced with creamy ricotta and peppery wild rocket.",
         palate: "Bold palate diners who appreciate savory Mediterranean seafood notes.",
-        pair: "Classic Negroni (₹950)"
+        pair: "Negroni Classico (₹950)"
       },
       {
         id: "focaccia",
@@ -154,7 +154,7 @@ export const restaurantData = {
         ingredients: "Sea Salt Rosemary Focaccia, Blistered Cherry Tomatoes, Wild Mountain Oregano, EVOO",
         flavor: "Crisp golden crust, airy crumb, fragrant rosemary and olive oil perfume.",
         palate: "Ideal table starter to pair with wine and aperitivos.",
-        pair: "Aperol Spritz (₹1,200)"
+        pair: "Amalfi Classic Mocktail (₹450)"
       }
     ],
 
@@ -170,7 +170,7 @@ export const restaurantData = {
         ingredients: "Handmade Raviolini Pillows, Mountain Fontina Fondue, Leeks, Browned Sage Butter",
         flavor: "Velvety molten cheese center with nutty browned butter and sweet leeks.",
         palate: "Handmade artisanal pasta lovers who adore rich cheese fondue.",
-        pair: "Civ & Civ (₹1,650)"
+        pair: "Civ & Civ Lambrusco Grasparossa DOP (₹1,650)"
       },
       {
         id: "pappardelle",
@@ -183,7 +183,7 @@ export const restaurantData = {
         ingredients: "Hand-Cut Silk Ribbon Pappardelle, 8-Hour Chianti Braised Lamb Ragù, Aged Pecorino Romano",
         flavor: "Rich, slow-simmered savory braised lamb coating delicate wide ribbon egg pasta.",
         palate: "Hearty pasta lovers seeking deep, comforting Tuscan meat sauce richness.",
-        pair: "Civ & Civ Red (₹1,650)"
+        pair: "Castello Banfi Chianti Classico DOCG (₹1,750)"
       },
       {
         id: "tagliatelle",
@@ -196,7 +196,7 @@ export const restaurantData = {
         ingredients: "Egg Ribbon Tagliatelle, Shaved Norcia Black Truffles, Vacche Rosse Parmigiano Reggiano",
         flavor: "Opulent forest truffle perfume with rich golden egg yolk coating and aged cheese umami.",
         palate: "Truffle connoisseurs desiring luxury decadence.",
-        pair: "Castello Banfi (₹1,750)"
+        pair: "Whisky Sour (₹950)"
       },
       {
         id: "gnocchi",
@@ -222,7 +222,7 @@ export const restaurantData = {
         ingredients: "Bronze-Die Extruded Spaghetti, Confit Garlic, Calabrian Chili, Cold Pressed EVOO, Parsley",
         flavor: "Silky emulsified olive oil sheen with piquant chili warmth and aromatic confit garlic.",
         palate: "Classic Italian purists who appreciate the elegance of simple perfection.",
-        pair: "Principesco (₹1,550)"
+        pair: "Gavi di Gavi DOCG Villa Sparina (₹1,650)"
       }
     ],
 
@@ -238,7 +238,7 @@ export const restaurantData = {
         ingredients: "Baked Violet Eggplant, Slow San Marzano Pomodoro, Buffalo Mozzarella, Fresh Basil",
         flavor: "Savory baked umami with melting cheese crust, sweet basil, and rich tomato sauce.",
         palate: "Vegetarian comfort food lovers looking for a hearty, baked main course.",
-        pair: "Civ & Civ (₹1,650)"
+        pair: "Valpolicella Ripasso DOC Superiore (₹1,800)"
       },
       {
         id: "risotto",
@@ -251,7 +251,7 @@ export const restaurantData = {
         ingredients: "Golden Saffron Risotto Cake, Fontina Fondue, Pan-Roasted Oyster Mushrooms, Leeks",
         flavor: "Delicate saffron fragrance with crisp golden crust and creamy fondue core.",
         palate: "Artisanal risotto lovers who appreciate Milanese crispy technique.",
-        pair: "Castello Banfi Le Rime (₹1,750)"
+        pair: "Barolo DOCG Massolino (₹2,200)"
       },
       {
         id: "spigola",
@@ -264,7 +264,7 @@ export const restaurantData = {
         ingredients: "Pan-Seared Chilean Seabass, Saffron Potato Confit, Braised Baby Fennel, Lemon Caper Emulsion",
         flavor: "Crispy skin with buttery, flakey tender white fish and bright citrus-caper notes.",
         palate: "Fine-dining seafood enthusiasts seeking delicate Mediterranean elegance.",
-        pair: "Castello Banfi Le Rime (₹1,750)"
+        pair: "Vermentino di Sardegna DOC (₹1,700)"
       },
       {
         id: "agnello",
@@ -277,7 +277,7 @@ export const restaurantData = {
         ingredients: "Roasted New Zealand Lamb Loin, Natural Herb Jus, Artichokes, Velvet Mashed Potatoes",
         flavor: "Tender roasted lamb loin, gelatinous herb reduction, and silky artichoke puree.",
         palate: "Meat connoisseurs seeking fall-off-the-bone slow-braised richness.",
-        pair: "Castello Banfi (₹1,750)"
+        pair: "Smoked Old Fashioned (₹950)"
       },
       {
         id: "valdostana",
@@ -290,7 +290,7 @@ export const restaurantData = {
         ingredients: "Corn-fed Chicken Breast, Melted Alpine Fontina, Shaved Black Truffles, Onion Potatoes",
         flavor: "Succulent poultry glazed in nutty cheese fondue and earthy truffle aroma.",
         palate: "Diners seeking a luxurious, cheese-crusted Alpine specialty.",
-        pair: "Castello Banfi (₹1,750)"
+        pair: "Castello Banfi Chianti Classico DOCG (₹1,750)"
       }
     ],
 
@@ -306,7 +306,7 @@ export const restaurantData = {
         ingredients: "Savoiardi Ladyfingers, Roasted Illy Espresso, Mascarpone Sabayon, Dutch Valrhona Cocoa",
         flavor: "Velvety bittersweet espresso cream with cloud-soft texture and rich chocolate dust.",
         palate: "The definitive Italian sweet finale for coffee and dessert lovers.",
-        pair: "Italian Espresso / Vin Santo"
+        pair: "Illy Espresso & Vin Santo del Chianti (₹399)"
       },
       {
         id: "pannacotta",
@@ -319,7 +319,7 @@ export const restaurantData = {
         ingredients: "Madagascar Vanilla Bean Cream, Macerated Forest Berry Coulis, Micro Mint",
         flavor: "Silky, delicate vanilla custard with tart berry contrast and floral sweetness.",
         palate: "Guests seeking a cool, light, elegant fruit-and-cream finish.",
-        pair: "Amalfi Classic Mocktail (₹450)"
+        pair: "Bellini di Venezia (₹850)"
       },
       {
         id: "cannoli",
@@ -332,7 +332,7 @@ export const restaurantData = {
         ingredients: "Crispy Fried Pastry Shells, Sweet Sheep's Milk Ricotta, Candied Orange Peel, Bronte Pistachio Crumb",
         flavor: "Crisp golden shell giving way to cloud-sweet citrus ricotta and nutty pistachio crunch.",
         palate: "Classic Italian pastry lovers craving traditional Sicilian sweetness.",
-        pair: "Illy Espresso / Vin Santo"
+        pair: "Passito di Pantelleria DOC (₹950)"
       },
       {
         id: "torta_caprese",
@@ -345,7 +345,7 @@ export const restaurantData = {
         ingredients: "Flourless Valrhona Dark Chocolate Torte, Roasted Almond Meal, Vanilla Bean Gelato, Berry Coulis",
         flavor: "Fudge-like decadent molten chocolate interior with delicate roasted almond aroma.",
         palate: "Chocolate connoisseurs desiring an authentic gluten-free Italian bake.",
-        pair: "Castello Banfi (₹1,750)"
+        pair: "Amaro Montenegro con Arancia (₹750)"
       },
       {
         id: "affogato",
@@ -358,7 +358,7 @@ export const restaurantData = {
         ingredients: "Double Scoop Madagascar Vanilla Bean Gelato, Freshly Pulled Illy Espresso Shot, Amaretti Crumb",
         flavor: "Dramatic hot-and-cold contrast of bitter roasted espresso melting over velvety sweet gelato.",
         palate: "Espresso and ice cream aficionados wanting an unhurried Italian finale.",
-        pair: "Sambuca / Grappa"
+        pair: "Artisanal Sambuca Romana & Grappa di Barolo (₹750)"
       }
     ],
 
@@ -374,7 +374,7 @@ export const restaurantData = {
         ingredients: "Campari, Carpano Antica Sweet Red Vermouth, Tanqueray Gin, Flamed Orange Peel",
         flavor: "Bittersweet herbal complexity, botanical gin spine, and vibrant citrus zest.",
         palate: "The quintessential Italian aperitivo for cocktail connoisseurs.",
-        pair: "Burrata / Focaccia Bread"
+        pair: "Pizza Italiana (₹1,150)"
       },
       {
         id: "martini",
@@ -387,7 +387,7 @@ export const restaurantData = {
         ingredients: "Tanqueray No. Ten Gin, Noilly Prat Dry Vermouth, Cerignola Olives or Lemon Twist",
         flavor: "Crisp, icy botanical elegance with silky olive or bright citrus finish.",
         palate: "Cocktail purists seeking timeless sophistication.",
-        pair: "Fritto Misto / Oysters"
+        pair: "Zuppa Di Mare (₹1,250)"
       },
       {
         id: "whisky_sour",
@@ -400,7 +400,7 @@ export const restaurantData = {
         ingredients: "Bourbon Whiskey, Fresh Amalfi Lemon Juice, Simple Cane Syrup, Angostura Bitters, Silky Froth",
         flavor: "Oak and vanilla warmth with bright refreshing citrus snap and velvety mouthfeel.",
         palate: "Whisky lovers who adore balanced sweet and tart perfection.",
-        pair: "Tagliatelle al Tartufo"
+        pair: "Tagliatelle al Tartufo (₹1,800)"
       },
       {
         id: "old_fashioned",
@@ -413,7 +413,7 @@ export const restaurantData = {
         ingredients: "Muddled Demerara Sugar, Aromatic Bitters, Premium Bourbon Whiskey, Maraschino Cherry, Orange Zest",
         flavor: "Deep rich caramel and toasted oak with lingering aromatic spice.",
         palate: "Guests desiring a slow-sipping, rich, sophisticated digestivo.",
-        pair: "Agnello Brasato / Tiramisù"
+        pair: "Agnello Brasato (₹2,750)"
       },
       {
         id: "margarita",
@@ -426,7 +426,7 @@ export const restaurantData = {
         ingredients: "Tequila Blanco, Disaronno Amaretto, Fresh Lime Juice, Agave Nectar, Sea Salt Rim",
         flavor: "Nutty almond sweetness complementing agave brightness and zesty lime.",
         palate: "Guests seeking a playful Italian twist on the classic Mexican cocktail.",
-        pair: "Wood-Fired Pizza"
+        pair: "Signature Margherita (₹1,150)"
       },
       {
         id: "amalfi_mocktail",
@@ -439,7 +439,7 @@ export const restaurantData = {
         ingredients: "Amalfi Lemon Confit, Fresh Sweet Basil, Sparkling San Pellegrino Soda, Elderflower Mist",
         flavor: "Effervescent, sparkling citrus freshness with fragrant aromatic basil.",
         palate: "Non-alcoholic guests seeking a refreshing Mediterranean aperitivo.",
-        pair: "Quinoa Salad / Burrata"
+        pair: "Focaccia Bread al Forno (₹850)"
       }
     ]
   },
@@ -460,7 +460,7 @@ export const restaurantData = {
       ingredients: "Caputo 00 Flour, San Marzano DOP Tomatoes, Fresh Buffalo Mozzarella, Sweet Basil, EVOO",
       flavor: "Smoky wood-fired blister, sweet volcanic tomato acidity, and melted dairy sweetness.",
       palate: "Neapolitan pizza purists and lovers of Italian simplicity.",
-      pair: "Castello Banfi Chianti (₹1,750)"
+      pair: "Italian Margarita (₹950)"
     },
     {
       id: "bottoni",
@@ -476,7 +476,7 @@ export const restaurantData = {
       ingredients: "Hand-rolled Silk Pasta, Alpine Fontina Cheese, Sweet Leek Fondue, Browned Sage Butter",
       flavor: "Burst of warm molten alpine fontina wrapped in nutty sage butter and sweet leeks.",
       palate: "Artisanal pasta enthusiasts seeking rich, delicate handcrafted pillows.",
-      pair: "Civ & Civ Red (₹1,650)"
+      pair: "Civ & Civ Lambrusco Grasparossa DOP (₹1,650)"
     },
     {
       id: "agnello",
@@ -492,7 +492,7 @@ export const restaurantData = {
       ingredients: "Prime New Zealand Lamb Loin, 12-Hour Natural Rosemary Glaze, Braised Artichokes, Mashed Potatoes",
       flavor: "Deep fall-apart savory lamb loin reduction, fragrant rosemary herb notes, and silky mash.",
       palate: "Connoisseurs desiring slow-braised, melt-in-mouth culinary craftsmanship.",
-      pair: "Castello Banfi Reserve (₹1,750)"
+      pair: "Smoked Old Fashioned (₹950)"
     }
   ],
 
