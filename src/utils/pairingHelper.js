@@ -259,7 +259,7 @@ export function findPairedDish(pairString, menu) {
       calories: "150 kcal",
       diet: "Vegetarian",
       tags: ["veg", "vegan"],
-      img: "/images/beer_peroni.jpg",
+      img: "/images/beer_peroni.jpeg",
       ingredients: "Italian Two-Row Spring Barley, Nostrano dell'Isola Maize, Saaz-Saaz Hops",
       flavor: "Crisp, clean, refreshing lager with delicate citrus aroma and subtle bitter finish.",
       palate: "Cold Italian premium lager pairing seamlessly with crispy fried calamari and prawns.",
