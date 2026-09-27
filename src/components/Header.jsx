@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from "react";
-import { Menu as MenuIcon, X, Sparkles } from "lucide-react";
+import { Menu as MenuIcon, X, Sparkles, Volume2 } from "lucide-react";
 import AmbientSoundToggle from "./AmbientSoundToggle";
+import { useAmbiance } from "../context/AmbianceContext";
 
 export default function Header({ brand, onNavigate, onOpenAiConcierge }) {
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const { isPlaying, toggleSound } = useAmbiance();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -87,6 +89,18 @@ export default function Header({ brand, onNavigate, onOpenAiConcierge }) {
             >
               [ RESERVE ]
             </button>
+
+            {/* On mobile, if ambiance is playing, show a compact mute toggle button next to the hamburger icon */}
+            {isPlaying && (
+              <button
+                onClick={toggleSound}
+                className="md:hidden flex items-center justify-center w-8 h-8 rounded-full bg-[#B86B35] text-white shadow-xs cursor-pointer"
+                title="Ambiance Playing - Tap to Mute"
+                aria-label="Ambiance Playing - Tap to Mute"
+              >
+                <Volume2 size={14} className="animate-pulse" />
+              </button>
+            )}
 
             {/* Mobile Hamburger Menu Toggle */}
             <button
