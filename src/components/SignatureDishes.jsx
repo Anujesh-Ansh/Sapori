@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { ArrowUpRight } from "lucide-react";
-import DietaryBadges, { VegSymbol, NonVegSymbol } from "./DietaryBadges";
+import DietaryBadges, { VegSymbol, NonVegSymbol, EggSymbol, DietarySymbol } from "./DietaryBadges";
 
 export default function SignatureDishes({ signatures, onSelectDish }) {
   const [activeIdx, setActiveIdx] = useState(0);
@@ -51,7 +51,7 @@ export default function SignatureDishes({ signatures, onSelectDish }) {
               <div className="p-4 space-y-2">
                 <div className="flex items-center justify-between gap-2">
                   <div className="flex items-center gap-1.5 min-w-0">
-                    {isNonVeg ? <NonVegSymbol /> : <VegSymbol />}
+                    <DietarySymbol dish={sig} />
                     <h4 className="font-serif text-lg text-[#2B1B17] group-hover:text-[#B86B35] transition-colors leading-snug truncate">
                       {sig.title}
                     </h4>

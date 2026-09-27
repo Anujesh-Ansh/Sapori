@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { X, Utensils, Wine } from "lucide-react";
-import DietaryBadges, { VegSymbol, NonVegSymbol } from "./DietaryBadges";
+import DietaryBadges, { VegSymbol, NonVegSymbol, EggSymbol, DietarySymbol } from "./DietaryBadges";
 import { findPairedDish } from "../utils/pairingHelper";
 
 export default function DishDetailModal({ dish, menu, onClose, onReserveForDish }) {
@@ -77,7 +77,7 @@ export default function DishDetailModal({ dish, menu, onClose, onReserveForDish 
           <div className="md:col-span-6 p-6 sm:p-7 flex flex-col justify-between space-y-4">
             <div className="space-y-3">
               <div className="flex items-center gap-2">
-                {isNonVeg ? <NonVegSymbol /> : <VegSymbol />}
+                <DietarySymbol dish={currentDish} />
                 <h3 className="font-serif text-2xl sm:text-3xl text-[#2B1B17] leading-snug">
                   {currentDish.name}
                 </h3>

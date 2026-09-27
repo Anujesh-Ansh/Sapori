@@ -176,7 +176,7 @@ export default function Header({ brand, onNavigate, onOpenAiConcierge }) {
             onClick={() => handleNavClick("chef-awards")}
             className="text-base py-1.5 hover:text-[#B86B35] text-[#2B1B17] transition-colors"
           >
-            [ CHEF & AWARDS ]
+            [ CHEF ]
           </button>
           <button
             onClick={() => handleNavClick("reserve")}

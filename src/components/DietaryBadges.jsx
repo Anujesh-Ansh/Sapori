@@ -26,6 +26,37 @@ export function NonVegSymbol({ className = "" }) {
   );
 }
 
+// Official Indian Food Regulatory Orange Dot in Square for Eggitarian (Contains Egg, No Meat)
+export function EggSymbol({ className = "" }) {
+  return (
+    <span
+      className={`inline-flex items-center justify-center w-3.5 h-3.5 border border-[#EA580C] rounded-[2px] bg-white p-[2px] shrink-0 align-middle shadow-2xs ${className}`}
+      title="Eggitarian (Contains Egg)"
+      aria-label="Eggitarian"
+    >
+      <span className="w-1.5 h-1.5 rounded-full bg-[#EA580C] block"></span>
+    </span>
+  );
+}
+
+export const EggitarianSymbol = EggSymbol;
+
+// Unified smart dietary indicator symbol (Dot in square)
+export function DietarySymbol({ dish, tags = [], diet = "", className = "" }) {
+  const allTags = dish ? (dish.tags || []) : tags;
+  const dietVal = dish ? (dish.diet || "") : diet;
+  const isNonVeg = allTags.includes("nonveg") || dietVal === "Non-Veg" || dietVal === "Seafood";
+  const hasEgg = allTags.includes("egg") || allTags.includes("contains-egg") || dietVal === "Eggitarian";
+
+  if (isNonVeg) {
+    return <NonVegSymbol className={className} />;
+  }
+  if (hasEgg) {
+    return <EggSymbol className={className} />;
+  }
+  return <VegSymbol className={className} />;
+}
+
 // Blue Fish Icon for Seafood
 export function BlueFishIcon({ className = "" }) {
   return (
@@ -111,29 +142,72 @@ export default function DietaryBadges({
   const allTags = [...(tags || [])];
 
   if (!excludeVegSymbols) {
-    if (diet === "Vegetarian" && !allTags.includes("veg")) {
+    if (
+      (diet === "Vegetarian" || diet === "veg") &&
+      !allTags.includes("veg") &&
+      !allTags.includes("eggitarian")
+    ) {
       allTags.unshift("veg");
     } else if (
-      (diet === "Non-Veg" || diet === "Seafood") &&
+      (diet === "Non-Veg" || diet === "nonveg" || diet === "Seafood") &&
       !allTags.includes("nonveg")
     ) {
       allTags.unshift("nonveg");
+    } else if (
+      (diet === "Eggitarian" || diet === "eggitarian") &&
+      !allTags.includes("egg") &&
+      !allTags.includes("eggitarian")
+    ) {
+      allTags.unshift("eggitarian");
     }
   }
 
   if (allTags.length === 0) return null;
+
+  const hasEgg = allTags.some((t) => {
+    const n = t.toLowerCase().replace(/[\s_]+/g, "-");
+    return n === "egg" || n === "contains-egg" || n === "eggitarian";
+  }) || diet === "Eggitarian";
+
+  const hasNonVeg = allTags.some((t) => {
+    const n = t.toLowerCase().replace(/[\s_]+/g, "-");
+    return n === "nonveg" || n === "non-veg";
+  }) || diet === "Non-Veg" || diet === "Seafood";
+
+  const isEggitarianDish = hasEgg && !hasNonVeg;
+  let renderedEggitarianPrimary = false;
 
   return (
     <div className="inline-flex items-center flex-wrap gap-1.5">
       {allTags.map((tag, idx) => {
         const normalized = tag.toLowerCase().replace(/[\s_]+/g, "-");
 
-        if (normalized === "veg" || normalized === "vegetarian") {
+        if (normalized === "veg" || normalized === "vegetarian" || normalized === "eggitarian") {
           if (excludeVegSymbols) return null;
+
+          if (isEggitarianDish) {
+            renderedEggitarianPrimary = true;
+            return (
+              <span
+                key={`${tag}-${idx}`}
+                className="inline-flex items-center gap-1"
+                title="Eggitarian (Contains Egg, No Meat)"
+              >
+                <EggSymbol />
+                {showLabels && (
+                  <span className="text-[10px] font-mono font-semibold text-[#EA580C] uppercase tracking-wider">
+                    EGGITARIAN
+                  </span>
+                )}
+              </span>
+            );
+          }
+
           return (
             <span
               key={`${tag}-${idx}`}
               className="inline-flex items-center gap-1"
+              title="100% Pure Vegetarian"
             >
               <VegSymbol />
               {showLabels && (
@@ -151,6 +225,7 @@ export default function DietaryBadges({
             <span
               key={`${tag}-${idx}`}
               className="inline-flex items-center gap-1"
+              title="Non-Vegetarian"
             >
               <NonVegSymbol />
               {showLabels && (
@@ -196,6 +271,9 @@ export default function DietaryBadges({
 
         // EGG with orange egg
         if (normalized === "egg" || normalized === "contains-egg") {
+          if (!excludeVegSymbols && renderedEggitarianPrimary) {
+            return null;
+          }
           return (
             <span
               key={`${tag}-${idx}`}
@@ -262,3 +340,4 @@ export default function DietaryBadges({
     </div>
   );
 }
+

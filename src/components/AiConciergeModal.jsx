@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { X, Sparkles, Utensils, Wine, CheckCircle2, RotateCcw } from "lucide-react";
+import { DietarySymbol } from "./DietaryBadges";
 
 export default function AiConciergeModal({ isOpen, onClose, menu, onSelectDish, onReserveForDish }) {
   const [prompt, setPrompt] = useState("");
@@ -177,11 +178,14 @@ export default function AiConciergeModal({ isOpen, onClose, menu, onSelectDish, 
               </div>
 
               <div className="sm:col-span-8 space-y-2 text-left">
-                <div className="flex justify-between items-baseline">
-                  <h4 className="font-serif text-xl sm:text-2xl text-[#2B1B17]">
-                    {recommendation.dish.name}
-                  </h4>
-                  <span className="font-mono text-sm sm:text-base text-[#B86B35] font-semibold">
+                <div className="flex justify-between items-baseline gap-2">
+                  <div className="flex items-center gap-2 min-w-0">
+                    <DietarySymbol dish={recommendation.dish} />
+                    <h4 className="font-serif text-xl sm:text-2xl text-[#2B1B17] truncate">
+                      {recommendation.dish.name}
+                    </h4>
+                  </div>
+                  <span className="font-mono text-sm sm:text-base text-[#B86B35] font-semibold shrink-0">
                     {recommendation.dish.price}
                   </span>
                 </div>

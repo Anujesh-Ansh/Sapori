@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Sparkles, Eye, ArrowUpRight, Wine } from "lucide-react";
-import DietaryBadges, { VegSymbol, NonVegSymbol } from "./DietaryBadges";
+import DietaryBadges, { VegSymbol, NonVegSymbol, EggSymbol, DietarySymbol } from "./DietaryBadges";
 
 export default function MenuSection({
   menu,
@@ -29,7 +29,7 @@ export default function MenuSection({
     { key: "vegan", label: "🌱 VEGAN" },
     { key: "gluten-free", label: "🌾 GLUTEN-FREE" },
     { key: "seafood", label: "🐟 SEAFOOD" },
-    { key: "egg", label: "🥚 EGG" },
+    { key: "egg", label: "🟠 EGGETARIAN" },
     { key: "keto", label: "🥑 KETO" },
     { key: "spicy", label: "🌶️ SPICY" },
   ];
@@ -53,7 +53,8 @@ export default function MenuSection({
   const currentItems = rawItems.filter((dish) => {
     if (selectedTag === "all") return true;
     if (selectedTag === "veg") {
-      return dish.tags?.includes("veg") || dish.tags?.includes("vegan") || dish.diet === "Vegetarian";
+      const hasEgg = dish.tags?.includes("egg") || dish.diet === "Eggitarian";
+      return (dish.tags?.includes("veg") || dish.tags?.includes("vegan") || dish.diet === "Vegetarian") && !hasEgg;
     }
     if (selectedTag === "nonveg") {
       return dish.tags?.includes("nonveg") || dish.diet === "Non-Veg" || dish.diet === "Seafood";
@@ -61,8 +62,8 @@ export default function MenuSection({
     if (selectedTag === "vegan") {
       return dish.tags?.includes("vegan");
     }
-    if (selectedTag === "egg") {
-      return dish.tags?.includes("egg");
+    if (selectedTag === "egg" || selectedTag === "eggitarian") {
+      return dish.tags?.includes("egg") || dish.diet === "Eggitarian";
     }
     return dish.tags?.includes(selectedTag);
   });
@@ -187,8 +188,8 @@ export default function MenuSection({
                     <div className="flex-grow min-w-0">
                       <div className="flex items-baseline justify-between gap-2">
                         <div className="flex items-center gap-1.5 min-w-0">
-                          {/* Indian Standard Green / Red Dot Square */}
-                          {isNonVeg ? <NonVegSymbol /> : <VegSymbol />}
+                          {/* Indian Standard Green / Red / Orange Dot Square */}
+                          <DietarySymbol dish={dish} />
                           
                           <span
                             className={`font-serif text-base sm:text-lg transition-colors truncate ${
