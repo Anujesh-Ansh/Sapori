@@ -395,7 +395,7 @@ export const restaurantData = {
         price: "₹950",
         calories: "210 kcal",
         diet: "Vegetarian",
-        tags: ["veg"],
+        tags: ["veg", "egg"],
         img: "/images/whisky_sour.jpg",
         ingredients: "Bourbon Whiskey, Fresh Amalfi Lemon Juice, Simple Cane Syrup, Angostura Bitters, Silky Froth",
         flavor: "Oak and vanilla warmth with bright refreshing citrus snap and velvety mouthfeel.",
