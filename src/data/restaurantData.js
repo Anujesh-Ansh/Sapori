@@ -1,0 +1,300 @@
+export const restaurantData = {
+  brand: {
+    name: "Sapori d'Italia",
+    tagline: "Crafted with Warmth, Served with Elegance",
+    positioning: "PREMIUM ITALIAN DINING",
+    subheading: "Authentic Italian Fine Dining • Connaught Place, New Delhi",
+    location: "Connaught Place, New Delhi",
+    address: "Atrium 4, Inner Circle, Block D, Connaught Place, New Delhi 110001",
+    hours: "Open Daily: 12:00 PM – Midnight",
+    phone: "+91 98110 24411",
+    email: "concierge@saporiditalia.in",
+    instagram: "@saporiditalia.delhi",
+    facebook: "SaporiDItaliaDelhi",
+  },
+
+  quickFacts: [
+    { label: "Space Planning", value: "3,200 sq. ft." },
+    { label: "Guest Covers", value: "80 Covers" },
+    { label: "Operational Hours", value: "12 PM – Midnight" },
+    { label: "Dining Concept", value: "Modern Premium Twist" }
+  ],
+
+  // Real Menu directly from Business Proposal PDF (Page 6) with local instant-load images
+  menu: {
+    appetizers: [
+      {
+        id: "burrata",
+        name: "Burrata",
+        price: "₹1,350",
+        calories: "440 kcal",
+        diet: "Vegetarian",
+        img: "/images/burrata.jpg",
+        ingredients: "Ripened Tomatoes, Fresh Rucola, Black Mission Figs, Basil Pesto, EVOO",
+        flavor: "Creamy lactic sweetness balanced by fresh herb acid and balsamic glaze.",
+        pair: "Castello Banfi Le Rime (₹1,750)"
+      },
+      {
+        id: "fritto",
+        name: "Fritto Misto",
+        price: "₹1,500",
+        calories: "590 kcal",
+        diet: "Seafood",
+        img: "/images/fritto_misto.jpg",
+        ingredients: "Crisp Baby Calamari, Tiger Prawns, Soft Shell Crab, Amalfi Lemon Mayo",
+        flavor: "Feather-light golden crunch with ocean brininess and citrus punch.",
+        pair: "Peroni Nastro Azzurro / Civ & Civ"
+      },
+      {
+        id: "quinoa",
+        name: "Quinoa Salad",
+        price: "₹1,250",
+        calories: "350 kcal",
+        diet: "Vegetarian",
+        img: "/images/quinoa_salad.jpg",
+        ingredients: "Organic Andean Quinoa, Avocado, Toasted Hazelnut, Baby Tuscan Kale",
+        flavor: "Nutty, crisp, refreshing with lemon-herb emulsion.",
+        pair: "Principesco Pinot Grigio (₹1,550)"
+      },
+      {
+        id: "minestrone",
+        name: "Minestrone Tradizionale",
+        price: "₹950",
+        calories: "390 kcal",
+        diet: "Vegetarian",
+        img: "/images/minestrone.jpg",
+        ingredients: "Conserve Style Broth, Seasonal Italian Garden Vegetables, Basil Genovese Pesto",
+        flavor: "Deep aromatic vegetable broth with fragrant herb finish.",
+        pair: "Civ & Civ (₹1,650)"
+      },
+      {
+        id: "zuppa",
+        name: "Zuppa Di Mare",
+        price: "₹1,250",
+        calories: "430 kcal",
+        diet: "Seafood",
+        img: "/images/zuppa_di_mare.jpg",
+        ingredients: "San Marzano Broth, Chili Prawns, Tender Scallops, Garlic Bruschetta",
+        flavor: "Rich seafood tomato bouillon with gentle chili warmth.",
+        pair: "Castello Banfi Le Rime (₹1,750)"
+      }
+    ],
+
+    pizza: [
+      {
+        id: "margherita",
+        name: "Signature Margherita",
+        price: "₹1,150",
+        calories: "480 kcal",
+        diet: "Vegetarian",
+        img: "/images/margherita.jpg",
+        ingredients: "450°C Wood-Fired Crust, San Marzano DOP, Campana Mozzarella, Fresh Basil, EVOO",
+        flavor: "Smoky wood-fired blister, sweet tomato acid, melted mozzarella velvet.",
+        pair: "Castello Banfi Chianti (₹1,750)"
+      },
+      {
+        id: "ortolana",
+        name: "Ortolana Wood-Fired",
+        price: "₹1,350",
+        calories: "480 kcal",
+        diet: "Vegetarian",
+        img: "/images/ortolana.jpg",
+        ingredients: "Tomato Sauce, Fior di Latte, Grilled Bell Peppers, Red Onion, Mushrooms, Asparagus",
+        flavor: "Charred sweet garden vegetables with herb-infused olive oil.",
+        pair: "Principesco (₹1,550)"
+      },
+      {
+        id: "italiana",
+        name: "Pizza Italiana",
+        price: "₹1,150",
+        calories: "490 kcal",
+        diet: "Non-Veg",
+        img: "/images/italiana.jpg",
+        ingredients: "Tomato Sauce, Fresh Mozzarella, Anchovies, Ricotta Cheese, Wild Rocket Leaves",
+        flavor: "Briny savory anchovies balanced with creamy ricotta and peppery rocket.",
+        pair: "Classic Negroni (₹950)"
+      },
+      {
+        id: "focaccia",
+        name: "Focaccia Bread al Forno",
+        price: "₹850",
+        calories: "400 kcal",
+        diet: "Vegetarian",
+        img: "/images/focaccia.jpg",
+        ingredients: "Sea Salt Rosemary Focaccia, Blistered Cherry Tomatoes, Wild Mountain Oregano, EVOO",
+        flavor: "Crisp crust, airy crumb, fragrant rosemary and olive oil perfume.",
+        pair: "Aperol Spritz (₹1,200)"
+      }
+    ],
+
+    pasta: [
+      {
+        id: "bottoni",
+        name: "Bottoni al Salto",
+        price: "₹1,450",
+        calories: "490 kcal",
+        diet: "Vegetarian",
+        img: "/images/bottoni.jpg",
+        ingredients: "Handmade Raviolini Pillows, Mountain Fontina Fondue, Leeks, Browned Sage Butter",
+        flavor: "Velvety molten cheese center with nutty browned butter and sweet leeks.",
+        pair: "Civ & Civ (₹1,650)"
+      },
+      {
+        id: "tagliatelle",
+        name: "Tagliatelle al Tartufo",
+        price: "₹1,800",
+        calories: "580 kcal",
+        diet: "Vegetarian",
+        img: "/images/tagliatelle.jpg",
+        ingredients: "Egg Ribbon Tagliatelle, Shaved Norcia Black Truffles, Vacche Rosse Parmigiano Reggiano",
+        flavor: "Opulent forest truffle perfume with rich golden egg yolk coating.",
+        pair: "Castello Banfi (₹1,750)"
+      },
+      {
+        id: "gnocchi",
+        name: "Gnocchi alla Sorrentina",
+        price: "₹1,700",
+        calories: "510 kcal",
+        diet: "Vegetarian",
+        img: "/images/gnocchi.jpg",
+        ingredients: "Handmade Potato Pillows, Slow San Marzano Pomodoro, Pulled Fior di Latte, Basil",
+        flavor: "Melt-in-mouth pillow texture wrapped in sweet tomato comfort.",
+        pair: "Berry Yuzu Fizz (₹450)"
+      },
+      {
+        id: "spaghetti",
+        name: "Spaghetti all'Aglio Olio",
+        price: "₹1,400",
+        calories: "450 kcal",
+        diet: "Vegetarian",
+        img: "/images/spaghetti.jpg",
+        ingredients: "Bronze-Die Extruded Spaghetti, Confit Garlic, Calabrian Chili, Cold Pressed EVOO, Parsley",
+        flavor: "Silky emulsified olive oil sheen with piquant chili warmth and garlic aroma.",
+        pair: "Principesco (₹1,550)"
+      }
+    ],
+
+    secondi: [
+      {
+        id: "parmigiana",
+        name: "Melanzane Parmigiana",
+        price: "₹1,350",
+        calories: "870 kcal",
+        diet: "Vegetarian",
+        img: "/images/parmigiana.jpg",
+        ingredients: "Baked Violet Eggplant, Slow San Marzano Pomodoro, Buffalo Mozzarella, Fresh Basil",
+        flavor: "Savory baked umami with melting cheese crust and herbal sweetness.",
+        pair: "Civ & Civ (₹1,650)"
+      },
+      {
+        id: "risotto",
+        name: "Risotto 'Al Salto'",
+        price: "₹1,650",
+        calories: "450 kcal",
+        diet: "Vegetarian",
+        img: "/images/risotto.jpg",
+        ingredients: "Golden Saffron Risotto Cake, Fontina Fondue, Pan-Roasted Oyster Mushrooms, Leeks",
+        flavor: "Delicate saffron fragrance with crisp golden crust and creamy fondue core.",
+        pair: "Castello Banfi Le Rime (₹1,750)"
+      },
+      {
+        id: "agnello",
+        name: "Agnello Brasato",
+        price: "₹2,750",
+        calories: "760 kcal",
+        diet: "Non-Veg",
+        img: "/images/agnello.jpg",
+        ingredients: "Roasted New Zealand Lamb Loin, Natural Herb Jus, Artichokes, Velvet Mashed Potatoes",
+        flavor: "Tender roasted lamb loin, gelatinous herb reduction, and silky artichoke puree.",
+        pair: "Castello Banfi (₹1,750)"
+      },
+      {
+        id: "valdostana",
+        name: "Valdostana al Tartufo",
+        price: "₹2,500",
+        calories: "950 kcal",
+        diet: "Non-Veg",
+        img: "/images/valdostana.jpg",
+        ingredients: "Corn-fed Chicken Breast, Melted Alpine Fontina, Shaved Black Truffles, Onion Potatoes",
+        flavor: "Succulent poultry glazed in nutty cheese fondue and earthy truffle aroma.",
+        pair: "Castello Banfi (₹1,750)"
+      }
+    ],
+
+    desserts: [
+      {
+        id: "tiramisu",
+        name: "Tiramisù Tradizionale",
+        price: "₹1,050",
+        calories: "410 kcal",
+        diet: "Vegetarian",
+        img: "/images/tiramisu.jpg",
+        ingredients: "Savoiardi Ladyfingers, Roasted Illy Espresso, Mascarpone Sabayon, Dutch Valrhona Cocoa",
+        flavor: "Velvety bittersweet espresso cream with cloud-soft texture.",
+        pair: "Italian Espresso / Vin Santo"
+      },
+      {
+        id: "pannacotta",
+        name: "Panna Cotta alla Vaniglia",
+        price: "₹950",
+        calories: "360 kcal",
+        diet: "Vegetarian",
+        img: "/images/pannacotta.jpg",
+        ingredients: "Madagascar Vanilla Bean Cream, Macerated Forest Berry Coulis, Micro Mint",
+        flavor: "Silky, delicate vanilla custard with tart berry contrast.",
+        pair: "Amalfi Classic Mocktail (₹450)"
+      }
+    ]
+  },
+
+  // 3 Signature Dishes (Instant local images)
+  signatures: [
+    {
+      id: "margherita",
+      title: "Signature Margherita",
+      category: "WOOD FIRE OVEN",
+      price: "₹1,150",
+      desc: "450°C wood-fired blistered crust with San Marzano DOP tomatoes and fresh Campana buffalo mozzarella.",
+      img: "/images/margherita.jpg",
+      pair: "Castello Banfi Chianti"
+    },
+    {
+      id: "bottoni",
+      title: "Handcrafted Bottoni",
+      category: "PASTA FRESCA",
+      price: "₹1,450",
+      desc: "Hand-pinched pasta pillows stuffed with mountain fontina, glazed in leek fondue and crisp sage butter.",
+      img: "/images/bottoni.jpg",
+      pair: "Civ & Civ Red"
+    },
+    {
+      id: "agnello",
+      title: "Agnello Brasato",
+      category: "SECONDI",
+      price: "₹2,750",
+      desc: "Roasted New Zealand lamb loin, natural rosemary jus, braised artichokes, and velvet mashed potatoes.",
+      img: "/images/agnello.jpg",
+      pair: "Castello Banfi Reserve"
+    }
+  ],
+
+  chef: {
+    name: "Alessandro Rossi",
+    role: "Executive Head Chef",
+    quote: "Cooking is about crafting an experience. We honor Italian tradition and embrace innovation, using the finest DOP ingredients to tell a story with every plate.",
+    experience: "14+ Years",
+    awardsCount: "20+ Honors",
+    photo: "/images/chef.jpg"
+  },
+
+  awards: [
+    { name: "3 Michelin Stars Guide", subtitle: "Culinary Recommendation" },
+    { name: "Les Grandes Tables du Monde", subtitle: "Gastronomic Excellence" },
+    { name: "Forbes Travel Guide", subtitle: "Four-Star Award 2024" },
+    { name: "TripAdvisor Travelers' Choice", subtitle: "Best of the Best" },
+    { name: "BBC Food & Travel", subtitle: "Top 10 Tables" },
+    { name: "Yahoo! News", subtitle: "Best Italian Dining" },
+    { name: "CNN Travel", subtitle: "Delhi's Authentic Italian Jewel" },
+    { name: "CNBC Luxury", subtitle: "Exceptional Cellar & Hospitality" }
+  ]
+};
