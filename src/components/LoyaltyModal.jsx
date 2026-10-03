@@ -530,14 +530,16 @@ export default function LoyaltyModal({
               <div className="p-3.5 rounded-xl bg-[#F5EFEB] border border-[#EAE1D5] text-xs font-mono text-[#5C4A3E] flex items-center gap-2.5">
                 <Sparkles size={16} className="text-[#B86B35] shrink-0" />
                 <span>
-                  {simulatedEarned >= 800 ? (
-                    <><strong>VIP Milestone!</strong> This single meal unlocks a <strong>₹500 Dining Credit Voucher</strong> or <strong>Reserve Chianti bottle</strong>.</>
+                  {simulatedEarned >= 1500 ? (
+                    <><strong>Grand Dining Tier!</strong> Earned enough to unlock an <strong>Artisan Truffle Tagliatelle</strong> or a sommelier pour of <strong>Castello Banfi Chianti DOCG</strong>.</>
+                  ) : simulatedEarned >= 800 ? (
+                    <><strong>VIP Milestone!</strong> This single meal unlocks a <strong>₹500 Dining Credit Voucher</strong> or handcrafted cocktail pairing.</>
                   ) : simulatedEarned >= 500 ? (
                     <><strong>High Return!</strong> This meal unlocks a <strong>₹300 Dining Credit Voucher</strong> or our signature <strong>Illy Tiramisù</strong>.</>
                   ) : simulatedEarned >= 250 ? (
                     <><strong>Great Start!</strong> This meal unlocks a <strong>₹150 Dining Credit Voucher</strong> (valid on min. bill ₹1,500).</>
                   ) : (
-                    <>Dine and accumulate points to unlock luxury dining credits on your subsequent visits.</>
+                    <>Dine and accumulate points toward luxury dining credits and reserve cellar bottles (4,500 pts).</>
                   )}
                 </span>
               </div>
