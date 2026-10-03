@@ -1,11 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { X, Utensils, Wine } from "lucide-react";
-import DietaryBadges, { VegSymbol, NonVegSymbol, EggSymbol, DietarySymbol } from "./DietaryBadges";
+import DietaryBadges, { DietarySymbol } from "./DietaryBadges";
 import { findPairedDish } from "../utils/pairingHelper";
 
 export default function DishDetailModal({ dish, menu, onClose, onReserveForDish }) {
-  if (!dish) return null;
-
   const [activeDishId, setActiveDishId] = useState(null);
   const [primaryDish, setPrimaryDish] = useState(null);
   const [pairedDish, setPairedDish] = useState(null);
@@ -27,9 +25,10 @@ export default function DishDetailModal({ dish, menu, onClose, onReserveForDish 
     }
   }, [dish, menu]);
 
+  if (!dish) return null;
+
   const currentDish = (activeDishId === pairedDish?.id && pairedDish) ? pairedDish : primaryDish || dish;
   const otherDish = (currentDish?.id === primaryDish?.id) ? pairedDish : primaryDish;
-  const isNonVeg = currentDish?.tags?.includes("nonveg") || currentDish?.diet === "Non-Veg" || currentDish?.diet === "Seafood";
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 overflow-y-auto">

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Sparkles, Eye, ArrowUpRight, Wine } from "lucide-react";
-import DietaryBadges, { VegSymbol, NonVegSymbol, EggSymbol, DietarySymbol } from "./DietaryBadges";
+import DietaryBadges, { DietarySymbol } from "./DietaryBadges";
 
 export default function MenuSection({
   menu,
@@ -159,7 +159,6 @@ export default function MenuSection({
             ) : (
               currentItems.map((dish) => {
                 const isSelected = hoveredDish?.id === dish.id;
-                const isNonVeg = dish.tags?.includes("nonveg") || dish.diet === "Non-Veg" || dish.diet === "Seafood";
 
                 return (
                   <div

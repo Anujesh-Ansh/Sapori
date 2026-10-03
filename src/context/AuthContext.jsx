@@ -23,27 +23,22 @@ export function calculateTier(points) {
 }
 
 export function AuthProvider({ children }) {
-  const [user, setUser] = useState(null);
-  const [loading, setLoading] = useState(true);
-
-  // Initialize session from localStorage or Firebase
-  useEffect(() => {
-    // 1. Check local storage first for persisted member or guest session
-    const saved = localStorage.getItem(STORAGE_KEY);
-    if (saved) {
-      try {
+  const [user, setUser] = useState(() => {
+    try {
+      const saved = localStorage.getItem(STORAGE_KEY);
+      if (saved) {
         const parsed = JSON.parse(saved);
-        if (parsed && parsed.id) {
-          setUser(parsed);
-          setLoading(false);
-          return;
-        }
-      } catch (e) {
-        console.error("Failed to parse saved session", e);
+        if (parsed && parsed.id) return parsed;
       }
+    } catch (e) {
+      console.error("Failed to parse saved session", e);
     }
+    return null;
+  });
+  const [loading, setLoading] = useState(false);
 
-    // 2. If Firebase is configured, listen to auth state changes
+  // If Firebase is configured, listen to auth state changes
+  useEffect(() => {
     if (isFirebaseConfigured && auth) {
       const unsubscribe = onAuthStateChanged(auth, (fbUser) => {
         if (fbUser) {
