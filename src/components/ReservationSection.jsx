@@ -1,32 +1,57 @@
-import React, { useState } from "react";
-import { Calendar, Clock, Users, Phone, CheckCircle, Sparkles } from "lucide-react";
+import React, { useState, useEffect } from "react";
+import { Calendar, Clock, Users, Phone, CheckCircle, Sparkles, Crown, Gift } from "lucide-react";
+import { useAuth } from "../context/AuthContext";
 
-export default function ReservationSection({ brand, preselectedDish }) {
-  const [date, setDate] = useState("2026-09-28");
+export default function ReservationSection({ brand, preselectedDish, appliedReward }) {
+  const { user, isLoggedIn, tierInfo, earnPoints } = useAuth();
+
+  const [date, setDate] = useState("2026-10-04");
   const [time, setTime] = useState("19:30");
-  const [guests, setGuests] = useState("2 Covers");
-  const [name, setName] = useState("");
-  const [phone, setPhone] = useState("");
+  const [guests, setGuests] = useState("2 Covers (Intimate)");
+  const [name, setName] = useState(user?.name || "");
+  const [phone, setPhone] = useState(user?.phone || "");
+  const [selectedVoucher, setSelectedVoucher] = useState(appliedReward?.code || "");
   const [confirmedBooking, setConfirmedBooking] = useState(null);
+
+  useEffect(() => {
+    if (user) {
+      if (!name) setName(user.name);
+      if (!phone) setPhone(user.phone);
+    }
+  }, [user]);
+
+  useEffect(() => {
+    if (appliedReward) {
+      setSelectedVoucher(appliedReward.code);
+    }
+  }, [appliedReward]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
     const bookingId = "SPI-" + Math.floor(1000 + Math.random() * 9000);
+    const earnedPointsAmount = 150;
+
+    if (isLoggedIn) {
+      earnPoints(earnedPointsAmount, `Table Reservation (${bookingId})`, "Reservation Bonus");
+    }
+
     setConfirmedBooking({
       id: bookingId,
       date,
       time,
       guests,
-      name: name || "Valued Guest",
-      phone: phone || brand.phone,
-      dishInterest: preselectedDish ? preselectedDish.name : null
+      name: name || user?.name || "Valued Guest",
+      phone: phone || user?.phone || brand.phone,
+      dishInterest: preselectedDish ? preselectedDish.name : null,
+      voucherApplied: selectedVoucher || null,
+      pointsEarned: isLoggedIn ? earnedPointsAmount : 0,
     });
   };
 
   return (
     <section
       id="reserve"
-      className="py-10 px-4 sm:px-8 md:px-16 max-w-xl mx-auto border-t border-[#EAE1D5] text-center bg-[#FBF9F5]"
+      className="py-12 sm:py-16 px-4 sm:px-8 md:px-16 max-w-xl mx-auto border-t border-[#EAE1D5] text-center bg-[#FBF9F5]"
     >
       {/* Header */}
       <div className="mb-6 space-y-1">
@@ -46,6 +71,15 @@ export default function ReservationSection({ brand, preselectedDish }) {
             <span>Noted for your table: <strong>{preselectedDish.name}</strong></span>
           </div>
         )}
+
+        {isLoggedIn && (
+          <div className="mt-2.5 inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#FFF7ED] border border-[#FED7AA] text-[11px] font-mono text-[#B86B35]">
+            <Crown size={12} />
+            <span>
+              <strong>{tierInfo?.badgeLabel || "Member"} Perk:</strong> Earn +150 Sapori Punti on this booking
+            </span>
+          </div>
+        )}
       </div>
 
       {confirmedBooking ? (
@@ -54,16 +88,29 @@ export default function ReservationSection({ brand, preselectedDish }) {
             <CheckCircle size={22} />
             <div>
               <h4 className="font-serif text-lg text-[#2B1B17]">Reservation Confirmed</h4>
-              <p className="font-mono text-xs text-[#7E6B60]">Booking Ref: <strong className="text-[#B86B35]">{confirmedBooking.id}</strong></p>
+              <p className="font-mono text-xs text-[#7E6B60]">
+                Booking Ref: <strong className="text-[#B86B35]">{confirmedBooking.id}</strong>
+              </p>
             </div>
           </div>
 
-          <div className="p-3.5 rounded-xl bg-[#FBF9F5] border border-[#EAE1D5] space-y-1 font-mono text-xs text-[#4A3B34]">
+          <div className="p-3.5 rounded-xl bg-[#FBF9F5] border border-[#EAE1D5] space-y-1.5 font-mono text-xs text-[#4A3B34]">
             <p><strong>Guest:</strong> {confirmedBooking.name}</p>
             <p><strong>Schedule:</strong> {confirmedBooking.date} at {confirmedBooking.time}</p>
             <p><strong>Party Size:</strong> {confirmedBooking.guests}</p>
             {confirmedBooking.dishInterest && (
               <p className="text-[#B86B35]"><strong>Curated Dish:</strong> {confirmedBooking.dishInterest}</p>
+            )}
+            {confirmedBooking.voucherApplied && (
+              <p className="text-[#B86B35] flex items-center gap-1">
+                <Gift size={12} />
+                <span><strong>Privilegio Voucher:</strong> {confirmedBooking.voucherApplied}</span>
+              </p>
+            )}
+            {confirmedBooking.pointsEarned > 0 && (
+              <p className="text-emerald-700 font-semibold pt-0.5">
+                🎉 +{confirmedBooking.pointsEarned} Sapori Punti added to your account!
+              </p>
             )}
             <p className="text-[#8C7769] text-[10px] pt-1">
               *A confirmation SMS has been dispatched to {confirmedBooking.phone}.
@@ -122,10 +169,10 @@ export default function ReservationSection({ brand, preselectedDish }) {
               className="bg-[#FBF9F5] text-right text-[#2B1B17] font-mono focus:outline-none cursor-pointer border border-[#EAE1D5] rounded px-2 py-1"
             >
               <option value="1 Cover">1 Cover</option>
-              <option value="2 Covers">2 Covers (Intimate)</option>
-              <option value="4 Covers">4 Covers (Social)</option>
-              <option value="6 Covers">6 Covers (Family)</option>
-              <option value="8 Covers">8 Covers (Max Salon)</option>
+              <option value="2 Covers (Intimate)">2 Covers (Intimate)</option>
+              <option value="4 Covers (Social)">4 Covers (Social)</option>
+              <option value="6 Covers (Family)">6 Covers (Family)</option>
+              <option value="8 Covers (Max Salon)">8 Covers (Max Salon)</option>
             </select>
           </div>
 
@@ -136,7 +183,7 @@ export default function ReservationSection({ brand, preselectedDish }) {
               <input
                 required
                 type="text"
-                placeholder="e.g. Aaroh Anuraj"
+                placeholder="e.g. Leonardo Moretti"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
                 className="w-full bg-[#FBF9F5] border border-[#EAE1D5] rounded-lg px-3 py-2 text-[#2B1B17] font-mono text-xs focus:outline-none focus:border-[#B86B35]"
@@ -154,6 +201,28 @@ export default function ReservationSection({ brand, preselectedDish }) {
               />
             </div>
           </div>
+
+          {/* Privilegio Voucher Selection (if user has unlocked rewards) */}
+          {user?.rewards && user.rewards.length > 0 && (
+            <div className="pt-1">
+              <label className="text-[10px] text-[#8C7769] uppercase flex items-center justify-between mb-1">
+                <span>Apply Privilegio Reward Code</span>
+                <span className="text-[#B86B35] font-semibold">Optional</span>
+              </label>
+              <select
+                value={selectedVoucher}
+                onChange={(e) => setSelectedVoucher(e.target.value)}
+                className="w-full bg-[#FFFDF9] border border-[#DFC8B2] rounded-lg px-3 py-2 text-[#2B1B17] font-mono text-xs focus:outline-none focus:border-[#B86B35]"
+              >
+                <option value="">No voucher attached</option>
+                {user.rewards.map((r) => (
+                  <option key={r.id} value={r.code}>
+                    {r.title} ({r.code})
+                  </option>
+                ))}
+              </select>
+            </div>
+          )}
 
           <button
             type="submit"
@@ -175,3 +244,4 @@ export default function ReservationSection({ brand, preselectedDish }) {
     </section>
   );
 }
+

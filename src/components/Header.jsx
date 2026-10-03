@@ -1,12 +1,21 @@
 import React, { useState, useEffect } from "react";
-import { Menu as MenuIcon, X, Sparkles, Volume2 } from "lucide-react";
+import { Menu as MenuIcon, X, Sparkles, Volume2, Crown, Settings } from "lucide-react";
 import AmbientSoundToggle from "./AmbientSoundToggle";
 import { useAmbiance } from "../context/AmbianceContext";
+import { useAuth } from "../context/AuthContext";
 
-export default function Header({ brand, onNavigate, onOpenAiConcierge }) {
+export default function Header({
+  brand,
+  onNavigate,
+  onOpenAiConcierge,
+  onOpenAuth,
+  onOpenLoyalty,
+  onOpenSettings,
+}) {
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const { isPlaying, toggleSound } = useAmbiance();
+  const { user, isLoggedIn, tierInfo } = useAuth();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -52,6 +61,18 @@ export default function Header({ brand, onNavigate, onOpenAiConcierge }) {
             >
               [ EXPERIENCE ]
             </button>
+            <button
+              onClick={() => {
+                if (isLoggedIn && onOpenLoyalty) {
+                  onOpenLoyalty();
+                } else {
+                  handleNavClick("loyalty");
+                }
+              }}
+              className="text-[#4A3B34] hover:text-[#B86B35] transition-colors focus:outline-none cursor-pointer flex items-center gap-1"
+            >
+              <span>[ CLUB PRIVILEGIO ]</span>
+            </button>
           </div>
 
           {/* EXACT MATHEMATICAL SCREEN CENTER: Logo and Subtext */}
@@ -69,12 +90,12 @@ export default function Header({ brand, onNavigate, onOpenAiConcierge }) {
 
           {/* Right Navigation & Controls */}
           <div className="flex items-center gap-2 sm:gap-3 z-10 ml-auto">
-            {/* AMBIANCE TOGGLE: Shown in header ONLY on desktop (hidden md:flex).
-                On mobile, it moves inside the slide-down side menu so it never collides with the header! */}
+            {/* AMBIANCE TOGGLE */}
             <div className="hidden md:flex items-center">
               <AmbientSoundToggle />
             </div>
 
+            {/* AI CONCIERGE BUTTON */}
             <button
               onClick={onOpenAiConcierge}
               className="hidden lg:inline-flex items-center gap-1.5 py-1.5 px-3 rounded-full bg-[#B86B35]/10 text-[#B86B35] hover:bg-[#B86B35] hover:text-white border border-[#B86B35]/30 transition-all font-mono text-[11px] cursor-pointer"
@@ -83,6 +104,27 @@ export default function Header({ brand, onNavigate, onOpenAiConcierge }) {
               <span>AI CONCIERGE</span>
             </button>
 
+            {/* CLUB MEMBERSHIP / GUEST AUTH BUTTON */}
+            {isLoggedIn ? (
+              <button
+                onClick={onOpenLoyalty}
+                className="hidden sm:inline-flex items-center gap-1.5 py-1.5 px-3 rounded-full bg-[#FFF7ED] hover:bg-[#FED7AA]/60 text-[#B86B35] border border-[#FED7AA] font-mono text-[11px] font-bold transition-all cursor-pointer shadow-2xs"
+                title={`${user.name} • ${tierInfo?.badgeLabel} • View Privilegio Card`}
+              >
+                <Crown size={12} className="text-[#B86B35]" />
+                <span>{user.points?.toLocaleString()} PTS</span>
+              </button>
+            ) : (
+              <button
+                onClick={onOpenAuth}
+                className="hidden sm:inline-flex items-center gap-1.5 py-1.5 px-3 rounded-full bg-white hover:bg-[#F7F2EC] text-[#2B1B17] hover:text-[#B86B35] border border-[#DFCBB9] font-mono text-[11px] font-semibold transition-all cursor-pointer shadow-2xs"
+              >
+                <Crown size={12} className="text-[#B86B35]" />
+                <span>SIGN IN / CLUB</span>
+              </button>
+            )}
+
+            {/* RESERVE BUTTON */}
             <button
               onClick={() => handleNavClick("reserve")}
               className="hidden sm:inline-block py-1.5 px-4 rounded-full bg-[#B86B35] text-white hover:bg-[#8F4918] transition-all font-mono tracking-widest text-[11px] font-semibold shadow-xs cursor-pointer"
@@ -115,9 +157,9 @@ export default function Header({ brand, onNavigate, onOpenAiConcierge }) {
         </div>
       </header>
 
-      {/* Mobile Drawer Menu - Includes Ambiance Toggle Under Side Menu */}
+      {/* Mobile Drawer Menu */}
       {mobileMenuOpen && (
-        <div className="fixed inset-0 z-50 bg-[#FBF9F5]/98 backdrop-blur-xl md:hidden flex flex-col justify-center items-center gap-5 font-mono text-sm tracking-widest uppercase p-6 animate-fadeIn">
+        <div className="fixed inset-0 z-50 bg-[#FBF9F5]/98 backdrop-blur-xl md:hidden flex flex-col justify-center items-center gap-4 font-mono text-sm tracking-widest uppercase p-6 animate-fadeIn overflow-y-auto">
           
           <button
             onClick={() => setMobileMenuOpen(false)}
@@ -127,7 +169,7 @@ export default function Header({ brand, onNavigate, onOpenAiConcierge }) {
             <X size={24} />
           </button>
 
-          <div className="text-center mb-3">
+          <div className="text-center mb-1">
             <span className="font-serif text-2xl font-bold text-[#2B1B17] block">
               {brand.name}
             </span>
@@ -136,7 +178,53 @@ export default function Header({ brand, onNavigate, onOpenAiConcierge }) {
             </span>
           </div>
 
-          {/* Ambiance Toggle Inside Mobile Side Menu (As Requested) */}
+          {/* Member Card or Auth in Mobile Drawer */}
+          {isLoggedIn ? (
+            <div className="w-full max-w-xs p-3.5 rounded-2xl bg-white border border-[#DFC8B2] shadow-xs flex items-center justify-between">
+              <button
+                onClick={() => {
+                  setMobileMenuOpen(false);
+                  onOpenLoyalty();
+                }}
+                className="flex items-center gap-2.5 text-left"
+              >
+                <div className="w-8 h-8 rounded-full bg-[#FFF7ED] text-[#B86B35] border border-[#FED7AA] flex items-center justify-center shrink-0">
+                  <Crown size={15} />
+                </div>
+                <div>
+                  <span className="text-xs font-serif font-bold text-[#2B1B17] block leading-none">
+                    {user.name}
+                  </span>
+                  <span className="text-[10px] font-mono text-[#B86B35] block mt-1 font-semibold">
+                    {user.points?.toLocaleString()} Sapori Punti
+                  </span>
+                </div>
+              </button>
+              <button
+                onClick={() => {
+                  setMobileMenuOpen(false);
+                  onOpenSettings();
+                }}
+                className="p-1.5 text-[#7E6B60] hover:text-[#2B1B17] cursor-pointer"
+                title="Account Settings"
+              >
+                <Settings size={17} />
+              </button>
+            </div>
+          ) : (
+            <button
+              onClick={() => {
+                setMobileMenuOpen(false);
+                onOpenAuth();
+              }}
+              className="w-full max-w-xs py-2.5 px-4 rounded-xl bg-[#2B1B17] text-white flex items-center justify-center gap-2 text-xs font-mono font-semibold shadow-xs"
+            >
+              <Crown size={14} className="text-[#DFC2A5]" />
+              <span>[ SIGN IN / GUEST LOGIN ]</span>
+            </button>
+          )}
+
+          {/* Ambiance Toggle Inside Mobile Side Menu */}
           <div className="py-2 flex flex-col items-center gap-1 border-y border-[#EAE1D5] w-full max-w-xs">
             <span className="text-[10px] font-mono text-[#8C7769] tracking-wider uppercase mb-1">
               RESTAURANT AMBIANCE
@@ -146,41 +234,55 @@ export default function Header({ brand, onNavigate, onOpenAiConcierge }) {
 
           <button
             onClick={() => handleNavClick("menu")}
-            className="text-base py-1.5 hover:text-[#B86B35] text-[#2B1B17] transition-colors"
+            className="text-base py-1 hover:text-[#B86B35] text-[#2B1B17] transition-colors"
           >
             [ EDITORIAL MENU ]
           </button>
           <button
             onClick={() => handleNavClick("signatures")}
-            className="text-base py-1.5 hover:text-[#B86B35] text-[#2B1B17] transition-colors"
+            className="text-base py-1 hover:text-[#B86B35] text-[#2B1B17] transition-colors"
           >
             [ SIGNATURE DISHES ]
           </button>
           <button
             onClick={() => handleNavClick("experience")}
-            className="text-base py-1.5 hover:text-[#B86B35] text-[#2B1B17] transition-colors"
+            className="text-base py-1 hover:text-[#B86B35] text-[#2B1B17] transition-colors"
           >
             [ THE EXPERIENCE ]
           </button>
           <button
             onClick={() => {
               setMobileMenuOpen(false);
+              if (isLoggedIn && onOpenLoyalty) {
+                onOpenLoyalty();
+              } else {
+                handleNavClick("loyalty");
+              }
+            }}
+            className="text-base py-1 text-[#B86B35] flex items-center gap-1.5"
+          >
+            <Crown size={15} />
+            <span>[ CLUB PRIVILEGIO ]</span>
+          </button>
+          <button
+            onClick={() => {
+              setMobileMenuOpen(false);
               onOpenAiConcierge();
             }}
-            className="text-base py-1.5 text-[#B86B35] flex items-center gap-1.5"
+            className="text-base py-1 text-[#B86B35] flex items-center gap-1.5"
           >
             <Sparkles size={14} />
             <span>[ AI PALATE CONCIERGE ]</span>
           </button>
           <button
             onClick={() => handleNavClick("chef-awards")}
-            className="text-base py-1.5 hover:text-[#B86B35] text-[#2B1B17] transition-colors"
+            className="text-base py-1 hover:text-[#B86B35] text-[#2B1B17] transition-colors"
           >
             [ CHEF ]
           </button>
           <button
             onClick={() => handleNavClick("reserve")}
-            className="mt-2 py-3 px-8 bg-[#B86B35] text-white hover:bg-[#8F4918] transition-all rounded-full font-semibold shadow-sm"
+            className="mt-1 py-3 px-8 bg-[#B86B35] text-white hover:bg-[#8F4918] transition-all rounded-full font-semibold shadow-sm w-full max-w-xs"
           >
             [ RESERVE A TABLE ]
           </button>
@@ -189,3 +291,4 @@ export default function Header({ brand, onNavigate, onOpenAiConcierge }) {
     </>
   );
 }
+
