@@ -15,10 +15,10 @@ const AuthContext = createContext(null);
 
 const STORAGE_KEY = "sapori_club_member_session";
 
-// Helper to determine tier based on points
-export function calculateTier(points) {
-  if (points >= 2500) return "eccellenza";
-  if (points >= 1000) return "riserva";
+// Helper to determine tier strictly based on Lifetime / Tier Qualifying Points (NOT spendable balance)
+export function calculateTier(lifetimePoints = 0) {
+  if (lifetimePoints >= 5000) return "eccellenza";
+  if (lifetimePoints >= 2000) return "riserva";
   return "classico";
 }
 
@@ -28,7 +28,14 @@ export function AuthProvider({ children }) {
       const saved = localStorage.getItem(STORAGE_KEY);
       if (saved) {
         const parsed = JSON.parse(saved);
-        if (parsed && parsed.id) return parsed;
+        if (parsed && parsed.id) {
+          // Ensure lifetimePoints exists on parsed session
+          if (parsed.lifetimePoints == null) {
+            parsed.lifetimePoints = parsed.points || 0;
+          }
+          parsed.tier = calculateTier(parsed.lifetimePoints);
+          return parsed;
+        }
       }
     } catch (e) {
       console.error("Failed to parse saved session", e);
@@ -51,7 +58,8 @@ export function AuthProvider({ children }) {
               phone: fbUser.phoneNumber || "+91 98101 24567",
               isGuest: fbUser.isAnonymous,
               tier: "classico",
-              points: 500,
+              points: 200,
+              lifetimePoints: 200,
               memberNumber: `SAP-${fbUser.uid.substring(0, 4).toUpperCase()}-26`,
               joinedDate: "October 2026",
               dietaryPreference: "Vegetarian",
@@ -64,8 +72,8 @@ export function AuthProvider({ children }) {
                   date: "Today",
                   title: "Club Privilegio Welcome Bonus",
                   type: "earn",
-                  points: "+500",
-                  category: "Welcome Bonus",
+                  points: "+200",
+                  category: "Welcome Gift",
                 },
               ],
             };
@@ -73,11 +81,8 @@ export function AuthProvider({ children }) {
             return newMember;
           });
         }
-        setLoading(false);
       });
       return () => unsubscribe();
-    } else {
-      setLoading(false);
     }
   }, []);
 
@@ -91,31 +96,27 @@ export function AuthProvider({ children }) {
     }
   };
 
-  // Instant Guest Login (Fulfills user requirement for 1-click guest access to rewards & settings)
-  const loginAsGuest = async () => {
+  // Instant Demo Member Access (1-click access with verified VIP member account)
+  const loginAsDemoMember = async () => {
     setLoading(true);
     try {
-      if (isFirebaseConfigured && auth) {
-        try {
-          await signInAnonymously(auth);
-        } catch (err) {
-          console.warn("Firebase anonymous auth failed, falling back to local guest:", err);
-        }
-      }
-      // Populate guest user with rich demo profile and pre-loaded points
-      const guestSession = {
+      const memberSession = {
         ...DEFAULT_GUEST_USER,
-        id: `guest-${Date.now().toString().slice(-4)}`,
+        id: `member-${Date.now().toString().slice(-4)}`,
+        name: "Marco Rossi",
+        email: "marco.rossi@saporiditalia.in",
+        isGuest: false,
         loginTime: new Date().toISOString(),
       };
-      saveUserSession(guestSession);
-      return { success: true, user: guestSession };
+      saveUserSession(memberSession);
+      return { success: true, user: memberSession };
     } catch (error) {
       return { success: false, error: error.message };
     } finally {
       setLoading(false);
     }
   };
+  const loginAsGuest = loginAsDemoMember;
 
   // Email / Password Login
   const loginWithEmail = async (email, password) => {
@@ -131,7 +132,8 @@ export function AuthProvider({ children }) {
           phone: "+91 98101 24567",
           isGuest: false,
           tier: "riserva",
-          points: 1200,
+          points: 1150,
+          lifetimePoints: 2450,
           memberNumber: `SAP-${fbUser.uid.substring(0, 4).toUpperCase()}-26`,
           joinedDate: "October 2026",
           dietaryPreference: "Eggitarian",
@@ -139,13 +141,15 @@ export function AuthProvider({ children }) {
           anniversaryDate: "14 February",
           rewards: [
             {
-              id: "rew-welcome-500",
-              rewardId: "dining_500",
-              title: "₹500 Dining Credit Voucher",
-              code: "WELCOME500",
+              id: "rew-welcome-150",
+              rewardId: "dining_150",
+              title: "₹150 Dining Credit Voucher",
+              code: "WELCOME150",
+              minSpend: "Min. bill ₹1,500",
+              terms: "Valid on dine-in with min. food & beverage bill of ₹1,500.",
               unlockedAt: "1 Oct 2026",
               status: "available",
-              pointsCost: 500,
+              pointsCost: 250,
               expiry: "Valid until 31 Dec 2026",
             },
           ],
@@ -171,7 +175,8 @@ export function AuthProvider({ children }) {
           phone: "+91 98101 24567",
           isGuest: false,
           tier: "riserva",
-          points: 1200,
+          points: 1150,
+          lifetimePoints: 2450,
           memberNumber: `SAP-${Math.floor(1000 + Math.random() * 9000)}-26`,
           joinedDate: "October 2026",
           dietaryPreference: "Eggitarian",
@@ -179,13 +184,15 @@ export function AuthProvider({ children }) {
           anniversaryDate: "14 February",
           rewards: [
             {
-              id: "rew-welcome-500",
-              rewardId: "dining_500",
-              title: "₹500 Dining Credit Voucher",
-              code: "WELCOME500",
+              id: "rew-welcome-150",
+              rewardId: "dining_150",
+              title: "₹150 Dining Credit Voucher",
+              code: "WELCOME150",
+              minSpend: "Min. bill ₹1,500",
+              terms: "Valid on dine-in with min. food & beverage bill of ₹1,500.",
               unlockedAt: "1 Oct 2026",
               status: "available",
-              pointsCost: 500,
+              pointsCost: 250,
               expiry: "Valid until 31 Dec 2026",
             },
           ],
@@ -193,10 +200,10 @@ export function AuthProvider({ children }) {
             {
               id: `hist-welcome`,
               date: "Today",
-              title: "Club Privilegio Sign In Bonus",
+              title: "Club Privilegio Sign In",
               type: "earn",
-              points: "+100",
-              category: "Daily Visit",
+              points: "+50",
+              category: "Daily Check-In",
             },
           ],
         };
@@ -210,7 +217,7 @@ export function AuthProvider({ children }) {
     }
   };
 
-  // New Member Sign Up
+  // New Member Sign Up (with 200 Welcome Bonus Punti)
   const signupWithEmail = async (name, email, password) => {
     setLoading(true);
     try {
@@ -230,7 +237,8 @@ export function AuthProvider({ children }) {
         phone: "+91 98101 24567",
         isGuest: false,
         tier: "classico",
-        points: 500, // 500 Welcome Bonus Punti
+        points: 200,
+        lifetimePoints: 200,
         memberNumber: `SAP-${Math.floor(1000 + Math.random() * 9000)}-26`,
         joinedDate: "October 2026",
         dietaryPreference: "Vegetarian",
@@ -243,7 +251,7 @@ export function AuthProvider({ children }) {
             date: "Today",
             title: "Enrollment Welcome Bonus",
             type: "earn",
-            points: "+500",
+            points: "+200",
             category: "Welcome Gift",
           },
         ],
@@ -267,7 +275,7 @@ export function AuthProvider({ children }) {
     saveUserSession(updated);
   };
 
-  // Redeem Reward with Punti
+  // Redeem Reward with Punti (CRITICAL FIX: Redeeming rewards decreases points, NOT lifetimePoints, so Tier NEVER downgrades!)
   const redeemReward = (reward) => {
     if (!user) return { success: false, error: "Must be logged in to redeem rewards" };
     if (user.points < reward.pointsCost) {
@@ -275,7 +283,9 @@ export function AuthProvider({ children }) {
     }
 
     const newPoints = user.points - reward.pointsCost;
-    const newTier = calculateTier(newPoints);
+    // Lifetime points are preserved permanently so tier remains intact
+    const currentLifetime = user.lifetimePoints != null ? user.lifetimePoints : user.points;
+    const preservedTier = calculateTier(currentLifetime);
     const voucherCode = `${reward.codePrefix}-${Math.floor(1000 + Math.random() * 9000)}`;
 
     const newRewardItem = {
@@ -283,6 +293,8 @@ export function AuthProvider({ children }) {
       rewardId: reward.id,
       title: reward.title,
       code: voucherCode,
+      minSpend: reward.minSpend || "Min. bill required",
+      terms: reward.terms || "",
       unlockedAt: new Date().toLocaleDateString("en-US", { day: "numeric", month: "short", year: "numeric" }),
       status: "available",
       pointsCost: reward.pointsCost,
@@ -301,7 +313,8 @@ export function AuthProvider({ children }) {
     const updatedUser = {
       ...user,
       points: newPoints,
-      tier: newTier,
+      lifetimePoints: currentLifetime,
+      tier: preservedTier,
       rewards: [newRewardItem, ...(user.rewards || [])],
       history: [newHistoryEntry, ...(user.history || [])],
     };
@@ -310,11 +323,13 @@ export function AuthProvider({ children }) {
     return { success: true, voucher: newRewardItem };
   };
 
-  // Earn Points (e.g. on booking reservation or checking in)
-  const earnPoints = (pointsAmount, title = "Dining Visit", category = "Dining Spend") => {
+  // Earn Points (Increases both spendable points and lifetime points; upgrades tier when threshold reached)
+  const earnPoints = (pointsAmount, title = "Dining Visit", category = "Dining Bill") => {
     if (!user) return;
     const newPoints = user.points + pointsAmount;
-    const newTier = calculateTier(newPoints);
+    const currentLifetime = user.lifetimePoints != null ? user.lifetimePoints : user.points;
+    const newLifetimePoints = currentLifetime + pointsAmount;
+    const newTier = calculateTier(newLifetimePoints);
 
     const newHistoryEntry = {
       id: `hist-${Date.now()}`,
@@ -328,11 +343,24 @@ export function AuthProvider({ children }) {
     const updatedUser = {
       ...user,
       points: newPoints,
+      lifetimePoints: newLifetimePoints,
       tier: newTier,
       history: [newHistoryEntry, ...(user.history || [])],
     };
 
     saveUserSession(updatedUser);
+    return { pointsEarned: pointsAmount, newBalance: newPoints, tier: newTier };
+  };
+
+  // Earn 10% (or Tier Multiplier) on Dining Bill Amount
+  const earnPointsFromBill = (billAmount) => {
+    if (!user || billAmount <= 0) return { success: false };
+    const currentTier = user.tier || "classico";
+    const multiplier = currentTier === "eccellenza" ? 0.20 : currentTier === "riserva" ? 0.15 : 0.10;
+    const earned = Math.round(billAmount * multiplier);
+    const title = `Dining Bill ₹${billAmount.toLocaleString()} (${Math.round(multiplier * 100)}% Points)`;
+    earnPoints(earned, title, "10% Bill Reward");
+    return { success: true, pointsEarned: earned, billAmount, rate: `${Math.round(multiplier * 100)}%` };
   };
 
   // Sign out
@@ -365,6 +393,7 @@ export function AuthProvider({ children }) {
         updateUserProfile,
         redeemReward,
         earnPoints,
+        earnPointsFromBill,
         logout,
       }}
     >

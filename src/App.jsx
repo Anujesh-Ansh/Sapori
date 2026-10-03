@@ -98,7 +98,13 @@ function RestaurantApp() {
           onReserve={() => scrollToSection("reserve")}
         />
 
-        {/* 6. Club Privilegio: Loyalty Program & Membership Tiers */}
+        {/* 5. Maestro: Chef Alessandro Rossi & Critical Accolades */}
+        <ChefAndAwards
+          chef={restaurantData.chef}
+          awards={restaurantData.awards}
+        />
+
+        {/* 6. Club Privilegio: Exclusive Loyalty Program & Membership Tiers */}
         <LoyaltySection
           onOpenAuth={() => setIsAuthModalOpen(true)}
           onOpenLoyalty={() => {
@@ -108,12 +114,6 @@ function RestaurantApp() {
               setIsAuthModalOpen(true);
             }
           }}
-        />
-
-        {/* 7. Chef Alessandro Rossi & Critical Accolades */}
-        <ChefAndAwards
-          chef={restaurantData.chef}
-          awards={restaurantData.awards}
         />
 
         {/* 8. Minimalist Table Reservation with Loyalty Points Integration */}
@@ -156,7 +156,7 @@ function RestaurantApp() {
         onReserveForDish={handleReserveForDish}
       />
 
-      {/* Club Privilegio Authentication & Guest Login Modal */}
+      {/* Club Privilegio Exclusive Member Authentication Modal */}
       <AuthModal
         isOpen={isAuthModalOpen}
         onClose={() => setIsAuthModalOpen(false)}

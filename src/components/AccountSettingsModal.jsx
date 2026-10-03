@@ -21,7 +21,7 @@ export default function AccountSettingsModal({
   onClose,
   onOpenLoyaltyModal,
 }) {
-  const { user, updateUserProfile, logout, tierInfo, isGuest } = useAuth();
+  const { user, updateUserProfile, logout, tierInfo } = useAuth();
 
   const [name, setName] = useState(user?.name || "");
   const [email, setEmail] = useState(user?.email || "");
@@ -71,7 +71,7 @@ export default function AccountSettingsModal({
               Account & Dining Settings
             </span>
             <span className="font-mono text-[9px] uppercase tracking-widest text-[#DFC2A5] block mt-1">
-              {isGuest ? "Guest Member Profile • Sapori d'Italia" : "Club Privilegio Member Profile"}
+              Club Privilegio Member Profile • Sapori d'Italia
             </span>
           </div>
 
@@ -274,7 +274,7 @@ export default function AccountSettingsModal({
                 className="py-3 px-5 rounded-xl border border-[#EAE1D5] hover:border-[#FECACA] bg-white hover:bg-[#FEF2F2] text-[#8B2519] font-mono text-xs uppercase tracking-wider font-semibold transition-colors flex items-center justify-center gap-1.5 cursor-pointer shadow-2xs"
               >
                 <LogOut size={14} />
-                <span>{isGuest ? "Exit Guest Mode" : "Sign Out"}</span>
+                <span>Sign Out</span>
               </button>
             </div>
           </form>

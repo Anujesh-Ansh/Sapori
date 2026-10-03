@@ -120,7 +120,7 @@ export default function Header({
                 className="hidden sm:inline-flex items-center gap-1.5 py-1.5 px-3 rounded-full bg-white hover:bg-[#F7F2EC] text-[#2B1B17] hover:text-[#B86B35] border border-[#DFCBB9] font-mono text-[11px] font-semibold transition-all cursor-pointer shadow-2xs"
               >
                 <Crown size={12} className="text-[#B86B35]" />
-                <span>SIGN IN / CLUB</span>
+                <span>CLUB PRIVILEGIO</span>
               </button>
             )}
 
@@ -220,7 +220,7 @@ export default function Header({
               className="w-full max-w-xs py-2.5 px-4 rounded-xl bg-[#2B1B17] text-white flex items-center justify-center gap-2 text-xs font-mono font-semibold shadow-xs"
             >
               <Crown size={14} className="text-[#DFC2A5]" />
-              <span>[ SIGN IN / GUEST LOGIN ]</span>
+              <span>[ CLUB PRIVILEGIO // SIGN IN ]</span>
             </button>
           )}
 

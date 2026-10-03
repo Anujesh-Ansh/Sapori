@@ -29,11 +29,6 @@ export default function ReservationSection({ brand, preselectedDish, appliedRewa
   const handleSubmit = (e) => {
     e.preventDefault();
     const bookingId = "SPI-" + Math.floor(1000 + Math.random() * 9000);
-    const earnedPointsAmount = 150;
-
-    if (isLoggedIn) {
-      earnPoints(earnedPointsAmount, `Table Reservation (${bookingId})`, "Reservation Bonus");
-    }
 
     setConfirmedBooking({
       id: bookingId,
@@ -44,7 +39,9 @@ export default function ReservationSection({ brand, preselectedDish, appliedRewa
       phone: phone || user?.phone || brand.phone,
       dishInterest: preselectedDish ? preselectedDish.name : null,
       voucherApplied: selectedVoucher || null,
-      pointsEarned: isLoggedIn ? earnedPointsAmount : 0,
+      billEarningNote: isLoggedIn
+        ? `${tierInfo?.badgeLabel || "Member"}: 10% of your dining bill will be credited as Sapori Punti post-dining.`
+        : "Sign in or register your mobile number to earn 10% of your bill in Sapori Punti.",
     });
   };
 
@@ -56,7 +53,7 @@ export default function ReservationSection({ brand, preselectedDish, appliedRewa
       {/* Header */}
       <div className="mb-6 space-y-1">
         <p className="text-[11px] font-mono text-[#B86B35] tracking-[0.25em] uppercase font-semibold">
-          [ 06 // RESERVATIONS ]
+          [ 07 // RESERVATIONS ]
         </p>
         <h3 className="text-2xl sm:text-4xl font-serif text-[#2B1B17] font-normal">
           Your Table Awaits
@@ -72,11 +69,18 @@ export default function ReservationSection({ brand, preselectedDish, appliedRewa
           </div>
         )}
 
-        {isLoggedIn && (
+        {isLoggedIn ? (
           <div className="mt-2.5 inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#FFF7ED] border border-[#FED7AA] text-[11px] font-mono text-[#B86B35]">
             <Crown size={12} />
             <span>
-              <strong>{tierInfo?.badgeLabel || "Member"} Perk:</strong> Earn +150 Sapori Punti on this booking
+              <strong>{tierInfo?.badgeLabel || "Member"} Perk:</strong> 10% of your dining bill credited as Punti post-visit
+            </span>
+          </div>
+        ) : (
+          <div className="mt-2.5 inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#F5EFEB] border border-[#EAE1D5] text-[11px] font-mono text-[#7E6B60]">
+            <Crown size={12} className="text-[#B86B35]" />
+            <span>
+              Reserve with your mobile number to earn <strong>10% points</strong> on your final bill
             </span>
           </div>
         )}
@@ -107,13 +111,17 @@ export default function ReservationSection({ brand, preselectedDish, appliedRewa
                 <span><strong>Privilegio Voucher:</strong> {confirmedBooking.voucherApplied}</span>
               </p>
             )}
-            {confirmedBooking.pointsEarned > 0 && (
-              <p className="text-emerald-700 font-semibold pt-0.5">
-                🎉 +{confirmedBooking.pointsEarned} Sapori Punti added to your account!
+            <div className="mt-2 pt-2 border-t border-[#EAE1D5] text-[#2B1B17] text-[11px] bg-white p-2.5 rounded-lg border">
+              <p className="font-semibold text-[#B86B35] flex items-center gap-1">
+                <Sparkles size={12} />
+                <span>Club Privilegio 10% Bill Return</span>
               </p>
-            )}
+              <p className="text-[#7E6B60] mt-0.5">
+                Upon dining, <strong>10% of your food & beverage bill</strong> will be credited directly to your registered mobile (<strong>{confirmedBooking.phone}</strong>) within 6 hours.
+              </p>
+            </div>
             <p className="text-[#8C7769] text-[10px] pt-1">
-              *A confirmation SMS has been dispatched to {confirmedBooking.phone}.
+              *A confirmation SMS with your booking code has been dispatched.
             </p>
           </div>
 

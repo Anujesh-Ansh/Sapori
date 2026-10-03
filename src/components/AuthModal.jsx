@@ -44,10 +44,10 @@ export default function AuthModal({ isOpen, onClose, onOpenLoyaltyModal }) {
     setIsSubmitting(false);
   };
 
-  const handleGuestLogin = async () => {
+  const handleDemoLogin = async () => {
     setError("");
     setIsSubmitting(true);
-    const res = await loginAsGuest();
+    const res = await loginWithEmail("vip.member@saporiditalia.in", "password123");
     setIsSubmitting(false);
     if (res.success) {
       onClose();
@@ -81,49 +81,43 @@ export default function AuthModal({ isOpen, onClose, onOpenLoyaltyModal }) {
 
           <div className="flex items-center gap-2 text-[#DFC2A5] text-[10px] font-mono tracking-[0.25em] uppercase font-semibold mb-1">
             <Sparkles size={12} className="text-[#B86B35]" />
-            <span>CLUB PRIVILEGIO // MEMBERSHIP</span>
+            <span>CLUB PRIVILEGIO // EXCLUSIVE ACCESS</span>
           </div>
 
           <h3 className="font-serif text-2xl sm:text-3xl text-[#FBF9F5] leading-snug">
             Welcome to Sapori
           </h3>
           <p className="text-xs text-[#DFC2A5]/80 font-light mt-1">
-            Unlock exclusive dining points, chef's table perks & reserve cellar allocations.
+            Exclusive dining points, chef's table allocations & reserve cellar pairings.
           </p>
         </div>
 
         <div className="p-6 sm:p-7 space-y-5">
-          {/* Quick Instant Guest Login Highlight */}
-          <div className="p-4 rounded-2xl bg-gradient-to-br from-[#FFF7ED] to-[#FBF7F0] border border-[#FED7AA] space-y-2.5">
-            <div className="flex items-start justify-between">
-              <div>
-                <span className="inline-flex items-center gap-1 text-[10px] font-mono uppercase font-bold text-[#B86B35] tracking-wider">
-                  <span>👑 INSTANT GUEST PASS</span>
-                </span>
-                <p className="text-xs text-[#5C4A3E] font-medium mt-0.5">
-                  Explore reward points & account settings immediately.
-                </p>
-              </div>
-              <span className="font-mono text-xs font-semibold px-2 py-0.5 rounded-full bg-[#B86B35] text-white">
-                1,450 pts
+          {/* Exclusive Member Society Box with Quick VIP Demo Login */}
+          <div className="p-4 rounded-2xl bg-gradient-to-br from-[#FFF7ED] to-[#FBF7F0] border border-[#FED7AA] flex items-center justify-between gap-3">
+            <div className="space-y-0.5">
+              <span className="inline-flex items-center gap-1 text-[10px] font-mono uppercase font-bold text-[#B86B35] tracking-wider">
+                <span>👑 EXCLUSIVE MEMBERSHIP</span>
               </span>
+              <p className="text-xs text-[#5C4A3E] font-medium">
+                10% bill credits & Riserva Gold status at 2,000 pts.
+              </p>
             </div>
-
             <button
               type="button"
-              onClick={handleGuestLogin}
+              onClick={handleDemoLogin}
               disabled={isSubmitting}
-              className="w-full py-2.5 px-4 rounded-xl bg-[#2B1B17] hover:bg-[#B86B35] text-white font-mono text-xs uppercase tracking-wider font-semibold transition-all duration-200 flex items-center justify-center gap-2 cursor-pointer shadow-xs disabled:opacity-50"
+              className="py-1.5 px-3 rounded-xl bg-[#2B1B17] hover:bg-[#B86B35] text-white font-mono text-[10px] uppercase tracking-wider font-semibold transition-all cursor-pointer shadow-xs disabled:opacity-50 shrink-0"
+              title="1-click access with verified VIP Member account"
             >
-              <span>Continue as Guest Member</span>
-              <ArrowRight size={14} />
+              Demo VIP Access
             </button>
           </div>
 
           <div className="relative flex items-center justify-center">
             <div className="border-t border-[#EAE1D5] w-full" />
             <span className="bg-[#FBF9F5] px-3 font-mono text-[10px] uppercase tracking-widest text-[#8C7769]">
-              or member sign in
+              or sign in / enroll below
             </span>
           </div>
 
@@ -141,7 +135,7 @@ export default function AuthModal({ isOpen, onClose, onOpenLoyaltyModal }) {
                   : "text-[#7E6B60] hover:text-[#2B1B17]"
               }`}
             >
-              Sign In
+              Member Sign In
             </button>
             <button
               type="button"
@@ -155,7 +149,7 @@ export default function AuthModal({ isOpen, onClose, onOpenLoyaltyModal }) {
                   : "text-[#7E6B60] hover:text-[#2B1B17]"
               }`}
             >
-              Sign Up (+500 pts)
+              Enroll (+200 pts)
             </button>
           </div>
 
@@ -197,7 +191,7 @@ export default function AuthModal({ isOpen, onClose, onOpenLoyaltyModal }) {
                   required
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  placeholder="e.g. guest@saporiditalia.in"
+                  placeholder="e.g. member@saporiditalia.in"
                   className="w-full bg-white border border-[#EAE1D5] rounded-xl pl-10 pr-4 py-2.5 text-xs font-sans text-[#2B1B17] focus:outline-none focus:border-[#B86B35]"
                 />
               </div>

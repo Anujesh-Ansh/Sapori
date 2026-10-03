@@ -8,7 +8,7 @@ export default function LocationContact({ brand }) {
       className="py-10 px-4 sm:px-8 md:px-16 max-w-5xl mx-auto border-t border-[#EAE1D5] text-center font-mono text-xs bg-[#FBF9F5]"
     >
       <p className="text-[#B86B35] tracking-[0.25em] uppercase mb-1 font-semibold text-[11px]">
-        [ 07 // LOCATION & HOURS ]
+        [ 08 // LOCATION & HOURS ]
       </p>
 
       <h3 className="text-2xl sm:text-3xl font-serif text-[#2B1B17] mb-1 font-normal">

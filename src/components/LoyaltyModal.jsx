@@ -15,6 +15,10 @@ import {
   Copy,
   Check,
   ChevronRight,
+  Calculator,
+  ShieldCheck,
+  Coins,
+  TrendingUp,
 } from "lucide-react";
 import { useAuth } from "../context/AuthContext";
 import { REWARDS_CATALOGUE } from "../data/loyaltyData";
@@ -25,15 +29,20 @@ export default function LoyaltyModal({
   onOpenSettings,
   onReserveWithReward,
 }) {
-  const { user, tierInfo, tiers, redeemReward, isGuest } = useAuth();
-  const [activeTab, setActiveTab] = useState("overview"); // "overview" | "tiers" | "rewards" | "history"
+  const { user, tierInfo, tiers, redeemReward, earnPointsFromBill } = useAuth();
+  const [activeTab, setActiveTab] = useState("overview"); // "overview" | "calculator" | "rewards" | "tiers" | "history"
   const [copiedCode, setCopiedCode] = useState(null);
   const [redeemSuccess, setRedeemSuccess] = useState(null);
   const [redeemError, setRedeemError] = useState("");
+  const [calcBill, setCalcBill] = useState(3500);
+  const [calcFeedback, setCalcFeedback] = useState(null);
 
   if (!isOpen || !user) return null;
 
   const currentPoints = user.points || 0;
+  // Tier is strictly calculated on lifetime points so redeeming points never causes a downgrade
+  const lifetimePoints = user.lifetimePoints != null ? user.lifetimePoints : currentPoints;
+
   const nextTierKey = user.tier === "classico" ? "riserva" : user.tier === "riserva" ? "eccellenza" : null;
   const nextTier = nextTierKey ? tiers[nextTierKey] : null;
 
@@ -42,8 +51,8 @@ export default function LoyaltyModal({
         100,
         Math.max(
           10,
-          ((currentPoints - (user.tier === "riserva" ? 1000 : 0)) /
-            (nextTier.minPoints - (user.tier === "riserva" ? 1000 : 0))) *
+          ((lifetimePoints - (user.tier === "riserva" ? 2000 : 0)) /
+            (nextTier.minPoints - (user.tier === "riserva" ? 2000 : 0))) *
             100
         )
       )
@@ -68,6 +77,18 @@ export default function LoyaltyModal({
     }
   };
 
+  const handleSimulateBill = () => {
+    if (!earnPointsFromBill) return;
+    const res = earnPointsFromBill(calcBill);
+    if (res.success) {
+      setCalcFeedback(`🎉 Simulated bill settlement of ₹${calcBill.toLocaleString()}! Credited +${res.pointsEarned} Punti (${res.rate} tier rate) to your account.`);
+      setTimeout(() => setCalcFeedback(null), 6000);
+    }
+  };
+
+  const tierMultiplier = user.tier === "eccellenza" ? 0.20 : user.tier === "riserva" ? 0.15 : 0.10;
+  const simulatedEarned = Math.round(calcBill * tierMultiplier);
+
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 overflow-y-auto">
       {/* Backdrop */}
@@ -89,7 +110,7 @@ export default function LoyaltyModal({
                 Club Privilegio
               </span>
               <span className="font-mono text-[9px] uppercase tracking-widest text-[#DFC2A5] block mt-0.5">
-                Sapori d'Italia • Guest & Member Rewards
+                Sapori d'Italia • Exclusive Member Privileges
               </span>
             </div>
           </div>
@@ -117,10 +138,10 @@ export default function LoyaltyModal({
         </div>
 
         {/* Tab Navigation */}
-        <div className="grid grid-cols-4 bg-[#EFE9E2] border-b border-[#EAE1D5] text-[11px] font-mono shrink-0">
+        <div className="flex overflow-x-auto bg-[#EFE9E2] border-b border-[#EAE1D5] text-[11px] font-mono shrink-0 scrollbar-none">
           <button
             onClick={() => setActiveTab("overview")}
-            className={`py-3 text-center uppercase tracking-wider font-semibold transition-all border-b-2 cursor-pointer ${
+            className={`flex-1 py-3 px-3 text-center uppercase tracking-wider font-semibold transition-all border-b-2 cursor-pointer whitespace-nowrap ${
               activeTab === "overview"
                 ? "border-[#B86B35] text-[#2B1B17] bg-white"
                 : "border-transparent text-[#7E6B60] hover:text-[#2B1B17]"
@@ -129,8 +150,19 @@ export default function LoyaltyModal({
             My Card
           </button>
           <button
+            onClick={() => setActiveTab("calculator")}
+            className={`flex-1 py-3 px-3 text-center uppercase tracking-wider font-semibold transition-all border-b-2 cursor-pointer whitespace-nowrap flex items-center justify-center gap-1 ${
+              activeTab === "calculator"
+                ? "border-[#B86B35] text-[#2B1B17] bg-white"
+                : "border-transparent text-[#7E6B60] hover:text-[#2B1B17]"
+            }`}
+          >
+            <Calculator size={13} className="text-[#B86B35]" />
+            <span>10% Bill Tool</span>
+          </button>
+          <button
             onClick={() => setActiveTab("rewards")}
-            className={`py-3 text-center uppercase tracking-wider font-semibold transition-all border-b-2 cursor-pointer ${
+            className={`flex-1 py-3 px-3 text-center uppercase tracking-wider font-semibold transition-all border-b-2 cursor-pointer whitespace-nowrap ${
               activeTab === "rewards"
                 ? "border-[#B86B35] text-[#2B1B17] bg-white"
                 : "border-transparent text-[#7E6B60] hover:text-[#2B1B17]"
@@ -140,7 +172,7 @@ export default function LoyaltyModal({
           </button>
           <button
             onClick={() => setActiveTab("tiers")}
-            className={`py-3 text-center uppercase tracking-wider font-semibold transition-all border-b-2 cursor-pointer ${
+            className={`flex-1 py-3 px-3 text-center uppercase tracking-wider font-semibold transition-all border-b-2 cursor-pointer whitespace-nowrap ${
               activeTab === "tiers"
                 ? "border-[#B86B35] text-[#2B1B17] bg-white"
                 : "border-transparent text-[#7E6B60] hover:text-[#2B1B17]"
@@ -150,7 +182,7 @@ export default function LoyaltyModal({
           </button>
           <button
             onClick={() => setActiveTab("history")}
-            className={`py-3 text-center uppercase tracking-wider font-semibold transition-all border-b-2 cursor-pointer ${
+            className={`flex-1 py-3 px-3 text-center uppercase tracking-wider font-semibold transition-all border-b-2 cursor-pointer whitespace-nowrap ${
               activeTab === "history"
                 ? "border-[#B86B35] text-[#2B1B17] bg-white"
                 : "border-transparent text-[#7E6B60] hover:text-[#2B1B17]"
@@ -198,11 +230,9 @@ export default function LoyaltyModal({
                     <h4 className="font-serif text-2xl sm:text-3xl font-medium tracking-wide mt-1">
                       {user.name}
                     </h4>
-                    {isGuest && (
-                      <span className="inline-block mt-1 px-2 py-0.5 rounded-full text-[9px] font-mono bg-white/15 text-[#DFC2A5] border border-white/20 uppercase tracking-wider">
-                        Guest Pass Active
-                      </span>
-                    )}
+                    <span className="inline-block mt-1 px-2 py-0.5 rounded-full text-[9px] font-mono bg-white/15 text-[#DFC2A5] border border-white/20 uppercase tracking-wider">
+                      Verified Member
+                    </span>
                   </div>
 
                   <div className="text-right">
@@ -212,7 +242,7 @@ export default function LoyaltyModal({
                   </div>
                 </div>
 
-                <div className="mt-8 pt-5 border-t border-white/15 flex justify-between items-end relative z-10">
+                <div className="mt-6 pt-4 border-t border-white/15 flex justify-between items-end relative z-10">
                   <div>
                     <span className="text-[9px] font-mono uppercase tracking-widest text-[#DFC2A5]/80 block">
                       Member Identifier
@@ -220,16 +250,27 @@ export default function LoyaltyModal({
                     <span className="font-mono text-sm tracking-widest text-white font-medium block">
                       {user.memberNumber}
                     </span>
+                    <span className="text-[10px] font-mono text-[#DFC2A5]/80 block mt-0.5">
+                      Lifetime Dining: <strong className="text-white">{lifetimePoints.toLocaleString()} pts</strong>
+                    </span>
                   </div>
 
                   <div className="text-right">
                     <span className="text-[9px] font-mono uppercase tracking-widest text-[#DFC2A5]/80 block">
-                      Sapori Punti
+                      Spendable Punti
                     </span>
                     <span className="font-mono text-2xl sm:text-3xl font-bold text-[#E59866]">
                       {currentPoints.toLocaleString()}
                     </span>
                   </div>
+                </div>
+
+                {/* Permanent Tier Protection Assurance */}
+                <div className="mt-3.5 pt-2.5 border-t border-white/15 flex items-center gap-2 text-[10px] font-mono text-[#DFC2A5] relative z-10">
+                  <ShieldCheck size={14} className="text-emerald-400 shrink-0" />
+                  <span>
+                    <strong>Tier Protected:</strong> Your {tierInfo.badgeLabel} rank is qualified by {lifetimePoints.toLocaleString()} lifetime points. Redeeming vouchers NEVER downgrades your tier!
+                  </span>
                 </div>
               </div>
 
@@ -242,7 +283,7 @@ export default function LoyaltyModal({
                   </span>
                   {nextTier ? (
                     <span className="text-[#B86B35] font-semibold">
-                      {(nextTier.minPoints - currentPoints).toLocaleString()} pts to {nextTier.name}
+                      {(nextTier.minPoints - lifetimePoints).toLocaleString()} pts to {nextTier.name}
                     </span>
                   ) : (
                     <span className="text-emerald-700 font-semibold">
@@ -259,7 +300,7 @@ export default function LoyaltyModal({
                 </div>
 
                 <p className="text-[11px] text-[#7E6B60] font-light">
-                  {tierInfo.earnRate}. Use your points for dining discounts, reserve wines, and truffle pastas.
+                  {tierInfo.earnRate}. Based on <strong>10% of your dining bill</strong>. Spend points on dining discounts without losing tier rank.
                 </p>
               </div>
 
@@ -287,10 +328,17 @@ export default function LoyaltyModal({
                       >
                         <div className="flex justify-between items-start">
                           <div>
-                            <span className="text-[9px] font-mono uppercase tracking-wider text-[#B86B35] block font-semibold">
-                              Ready to Redeem
-                            </span>
-                            <h5 className="font-serif text-sm font-semibold text-[#2B1B17]">
+                            <div className="flex items-center gap-1.5 flex-wrap">
+                              <span className="text-[9px] font-mono uppercase tracking-wider text-[#B86B35] font-semibold">
+                                Ready to Redeem
+                              </span>
+                              {rew.minSpend && (
+                                <span className="text-[9px] font-mono px-1.5 py-0.2 rounded bg-[#FFF7ED] text-[#B86B35] border border-[#FED7AA]">
+                                  {rew.minSpend}
+                                </span>
+                              )}
+                            </div>
+                            <h5 className="font-serif text-sm font-semibold text-[#2B1B17] mt-0.5">
                               {rew.title}
                             </h5>
                           </div>
@@ -316,7 +364,13 @@ export default function LoyaltyModal({
                           </button>
                         </div>
 
-                        <div className="flex justify-between items-center text-[10px] text-[#8C7769] font-mono">
+                        {rew.terms && (
+                          <p className="text-[10px] text-[#7E6B60] italic leading-tight">
+                            {rew.terms}
+                          </p>
+                        )}
+
+                        <div className="flex justify-between items-center text-[10px] text-[#8C7769] font-mono pt-1 border-t border-[#F5EFEB]">
                           <span>{rew.expiry}</span>
                           <button
                             onClick={() => {
@@ -339,7 +393,7 @@ export default function LoyaltyModal({
                     </p>
                     <button
                       onClick={() => setActiveTab("rewards")}
-                      className="text-xs font-mono font-semibold text-[#B86B35] underline"
+                      className="text-xs font-mono font-semibold text-[#B86B35] underline cursor-pointer"
                     >
                       View Redeemable Catalog
                     </button>
@@ -350,14 +404,11 @@ export default function LoyaltyModal({
               {/* Action Buttons */}
               <div className="flex flex-col sm:flex-row gap-3 pt-2">
                 <button
-                  onClick={() => {
-                    onClose();
-                    if (onOpenSettings) onOpenSettings();
-                  }}
+                  onClick={() => setActiveTab("calculator")}
                   className="flex-1 py-3 px-4 rounded-xl border border-[#DFC8B2] bg-white hover:bg-[#F7F2EC] text-[#2B1B17] font-mono text-xs uppercase tracking-wider font-semibold transition-colors flex items-center justify-center gap-2 cursor-pointer shadow-2xs"
                 >
-                  <Settings size={14} />
-                  <span>Account Settings & Preferences</span>
+                  <Calculator size={14} className="text-[#B86B35]" />
+                  <span>Calculate 10% Bill Return</span>
                 </button>
                 <button
                   onClick={() => {
@@ -368,8 +419,159 @@ export default function LoyaltyModal({
                   className="flex-1 py-3 px-4 rounded-xl bg-[#B86B35] hover:bg-[#8F4918] text-white font-mono text-xs uppercase tracking-wider font-semibold transition-colors flex items-center justify-center gap-2 cursor-pointer shadow-xs"
                 >
                   <Utensils size={14} />
-                  <span>Reserve Table & Earn Points</span>
+                  <span>Reserve Table & Dine</span>
                 </button>
+              </div>
+            </div>
+          )}
+
+          {/* TAB: 10% BILL POINTS CALCULATOR */}
+          {activeTab === "calculator" && (
+            <div className="space-y-5 animate-fadeIn">
+              <div className="pb-3 border-b border-[#EAE1D5]">
+                <div className="flex items-center gap-2">
+                  <div className="w-7 h-7 rounded-lg bg-[#B86B35]/10 border border-[#B86B35]/30 flex items-center justify-center text-[#B86B35]">
+                    <Calculator size={16} />
+                  </div>
+                  <h4 className="font-serif text-lg text-[#2B1B17]">
+                    10% Dining Bill Points Calculator
+                  </h4>
+                </div>
+                <p className="text-xs text-[#7E6B60] mt-1 leading-relaxed">
+                  Every food & wine bill paid at Sapori d'Italia earns <strong>10% (up to 20%)</strong> back in Sapori Punti, credited directly to your mobile number.
+                </p>
+              </div>
+
+              {calcFeedback && (
+                <div className="p-3.5 rounded-2xl bg-[#F0FDF4] border border-[#BBF7D0] text-[#15803D] text-xs font-mono flex items-center gap-2 animate-fadeIn">
+                  <CheckCircle2 size={16} className="shrink-0" />
+                  <span>{calcFeedback}</span>
+                </div>
+              )}
+
+              {/* Interactive Bill Slider Card */}
+              <div className="p-5 rounded-2xl bg-white border border-[#EAE1D5] shadow-xs space-y-4">
+                <div className="flex justify-between items-center">
+                  <label className="text-xs font-mono uppercase tracking-wider text-[#8C7769] font-semibold">
+                    Expected Dining Bill Amount
+                  </label>
+                  <span className="font-serif text-2xl font-bold text-[#2B1B17]">
+                    ₹{calcBill.toLocaleString()}
+                  </span>
+                </div>
+
+                {/* Range Slider */}
+                <input
+                  type="range"
+                  min="1000"
+                  max="15000"
+                  step="250"
+                  value={calcBill}
+                  onChange={(e) => setCalcBill(Number(e.target.value))}
+                  className="w-full h-2 bg-[#EFE9E2] rounded-lg appearance-none cursor-pointer accent-[#B86B35]"
+                />
+
+                {/* Quick Presets */}
+                <div className="flex flex-wrap gap-2 pt-1">
+                  <span className="text-[10px] font-mono text-[#8C7769] uppercase self-center mr-1">
+                    Presets:
+                  </span>
+                  {[1500, 2500, 3500, 5000, 7500, 10000].map((amt) => (
+                    <button
+                      key={amt}
+                      type="button"
+                      onClick={() => setCalcBill(amt)}
+                      className={`px-2.5 py-1 rounded-lg text-xs font-mono cursor-pointer transition-colors ${
+                        calcBill === amt
+                          ? "bg-[#B86B35] text-white font-bold"
+                          : "bg-[#FBF9F5] border border-[#EAE1D5] text-[#5C4A3E] hover:border-[#B86B35]"
+                      }`}
+                    >
+                      ₹{amt.toLocaleString()}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              {/* Earnings Calculation Breakdown */}
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 font-mono text-center">
+                <div className="p-3.5 rounded-xl bg-white border border-[#EAE1D5]">
+                  <span className="text-[10px] uppercase text-[#8C7769] block">Your Rate</span>
+                  <span className="text-sm font-bold text-[#2B1B17] mt-0.5 block">
+                    {Math.round(tierMultiplier * 100)}% of Bill
+                  </span>
+                  <span className="text-[9px] text-[#B86B35]">
+                    {tierInfo.badgeLabel}
+                  </span>
+                </div>
+
+                <div className="p-3.5 rounded-xl bg-gradient-to-br from-[#FFF7ED] to-[#FFEDD5] border border-[#FED7AA]">
+                  <span className="text-[10px] uppercase text-[#B86B35] font-semibold block">You Earn</span>
+                  <span className="text-xl font-bold text-[#B86B35] mt-0.5 block">
+                    +{simulatedEarned.toLocaleString()} Punti
+                  </span>
+                  <span className="text-[9px] text-[#8C7769]">
+                    Permanent Tier Credit
+                  </span>
+                </div>
+
+                <div className="p-3.5 rounded-xl bg-white border border-[#EAE1D5]">
+                  <span className="text-[10px] uppercase text-[#8C7769] block">Turnaround</span>
+                  <span className="text-sm font-bold text-[#2B1B17] mt-0.5 block">
+                    Within 6 Hours
+                  </span>
+                  <span className="text-[9px] text-emerald-700 font-semibold">
+                    Direct SMS Notice
+                  </span>
+                </div>
+              </div>
+
+              {/* Unlocked Benefit Teaser */}
+              <div className="p-3.5 rounded-xl bg-[#F5EFEB] border border-[#EAE1D5] text-xs font-mono text-[#5C4A3E] flex items-center gap-2.5">
+                <Sparkles size={16} className="text-[#B86B35] shrink-0" />
+                <span>
+                  {simulatedEarned >= 800 ? (
+                    <><strong>VIP Milestone!</strong> This single meal unlocks a <strong>₹500 Dining Credit Voucher</strong> or <strong>Reserve Chianti bottle</strong>.</>
+                  ) : simulatedEarned >= 500 ? (
+                    <><strong>High Return!</strong> This meal unlocks a <strong>₹300 Dining Credit Voucher</strong> or our signature <strong>Illy Tiramisù</strong>.</>
+                  ) : simulatedEarned >= 250 ? (
+                    <><strong>Great Start!</strong> This meal unlocks a <strong>₹150 Dining Credit Voucher</strong> (valid on min. bill ₹1,500).</>
+                  ) : (
+                    <>Dine and accumulate points to unlock luxury dining credits on your subsequent visits.</>
+                  )}
+                </span>
+              </div>
+
+              {/* Simulate Button */}
+              <div className="space-y-2 pt-1">
+                <button
+                  type="button"
+                  onClick={handleSimulateBill}
+                  className="w-full py-3 bg-[#B86B35] hover:bg-[#8F4918] text-white font-mono text-xs uppercase tracking-wider font-semibold rounded-xl shadow-xs cursor-pointer flex items-center justify-center gap-2 transition-all"
+                >
+                  <Coins size={14} />
+                  <span>Simulate Bill Settlement (+{simulatedEarned} Punti)</span>
+                </button>
+                <p className="text-[10px] font-mono text-[#8C7769] text-center">
+                  *Demonstration test: Instantly adds points to your account balance and activity ledger.
+                </p>
+              </div>
+
+              {/* Anti-Fraud & Restaurant Terms Box */}
+              <div className="p-4 rounded-2xl bg-white border border-[#EAE1D5] space-y-2 text-[11px] text-[#5C4A3E] font-mono leading-relaxed">
+                <div className="flex items-center gap-1.5 text-[#2B1B17] font-semibold text-xs">
+                  <ShieldCheck size={14} className="text-[#B86B35]" />
+                  <span>Loyalty Integrity & Fair Terms Policy</span>
+                </div>
+                <p>
+                  • <strong>Verified Dining Spend Only:</strong> Points are earned exclusively from settled food & wine bills at the restaurant. Mere table bookings do not grant points to prevent fraudulent booking claims.
+                </p>
+                <p>
+                  • <strong>Fair Voucher Thresholds:</strong> Dining credit vouchers feature sensible minimum bill requirements (e.g., ₹150 off on ₹1,500+ bill) protecting our imported ingredient standards.
+                </p>
+                <p>
+                  • <strong>Permanent Tier Security:</strong> Your Tier status is calculated on cumulative lifetime points. Spending points on dining coupons will <strong>never downgrade your membership tier</strong>.
+                </p>
               </div>
             </div>
           )}
@@ -383,11 +585,11 @@ export default function LoyaltyModal({
                     Redeem Luxury Privileges
                   </h4>
                   <p className="text-xs text-[#7E6B60]">
-                    Select any reward to unlock an instant coupon code.
+                    Select any reward to unlock an instant coupon code for your next visit.
                   </p>
                 </div>
                 <div className="text-right">
-                  <span className="text-[10px] font-mono uppercase text-[#8C7769] block">Balance</span>
+                  <span className="text-[10px] font-mono uppercase text-[#8C7769] block">Spendable Balance</span>
                   <span className="font-mono text-base font-bold text-[#B86B35]">
                     {currentPoints.toLocaleString()} pts
                   </span>
@@ -418,6 +620,18 @@ export default function LoyaltyModal({
                         <p className="text-xs text-[#5C4A3E] font-light leading-relaxed">
                           {reward.desc}
                         </p>
+                        {reward.minSpend && (
+                          <div className="pt-1">
+                            <span className="inline-block text-[10px] font-mono px-2 py-0.5 rounded bg-[#FBF9F5] text-[#8C7769] border border-[#EAE1D5]">
+                              {reward.minSpend}
+                            </span>
+                          </div>
+                        )}
+                        {reward.terms && (
+                          <p className="text-[9px] text-[#8C7769] italic font-mono leading-tight">
+                            *{reward.terms}
+                          </p>
+                        )}
                       </div>
 
                       <div className="pt-2 border-t border-[#F5EFEB] flex justify-between items-center">
@@ -441,6 +655,10 @@ export default function LoyaltyModal({
                   );
                 })}
               </div>
+
+              <p className="text-[10px] font-mono text-[#8C7769] text-center pt-2">
+                *Note: Redeeming points for rewards reduces spendable points balance only. Your Lifetime Tier status is permanently preserved.
+              </p>
             </div>
           )}
 
