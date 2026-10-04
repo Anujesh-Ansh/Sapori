@@ -155,7 +155,7 @@ export const REWARDS_CATALOGUE = [
   {
     id: "reserve_wine",
     title: "Reserve Bottle of Chianti Classico DOCG (750ml)",
-    pointsCost: 4500,
+    pointsCost: 6000,
     category: "Sommelier Cellar",
     desc: "Full 750ml reserve bottle of Castello Banfi Chianti Classico DOCG served with sommelier decanting service.",
     terms: "Valid on dine-in table service. Full 750ml reserve bottle uncorked and decanted table-side by our sommelier.",

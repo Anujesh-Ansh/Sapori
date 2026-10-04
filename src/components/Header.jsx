@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Menu as MenuIcon, X, Sparkles, Volume2, Crown, Settings } from "lucide-react";
+import { Menu as MenuIcon, X, Sparkles, Volume2, Crown, Settings, Calendar } from "lucide-react";
 import AmbientSoundToggle from "./AmbientSoundToggle";
 import { useAmbiance } from "../context/AmbianceContext";
 import { useAuth } from "../context/AuthContext";
@@ -62,16 +62,10 @@ export default function Header({
               [ EXPERIENCE ]
             </button>
             <button
-              onClick={() => {
-                if (isLoggedIn && onOpenLoyalty) {
-                  onOpenLoyalty();
-                } else {
-                  handleNavClick("loyalty");
-                }
-              }}
-              className="text-[#4A3B34] hover:text-[#B86B35] transition-colors focus:outline-none cursor-pointer flex items-center gap-1"
+              onClick={() => handleNavClick("chef-awards")}
+              className="text-[#4A3B34] hover:text-[#B86B35] transition-colors focus:outline-none cursor-pointer"
             >
-              <span>[ CLUB PRIVILEGIO ]</span>
+              [ MAESTRO ]
             </button>
           </div>
 
@@ -89,7 +83,7 @@ export default function Header({
           </div>
 
           {/* Right Navigation & Controls */}
-          <div className="flex items-center gap-2 sm:gap-3 z-10 ml-auto">
+          <div className="flex items-center gap-2 sm:gap-2.5 z-10 ml-auto">
             {/* AMBIANCE TOGGLE */}
             <div className="hidden md:flex items-center">
               <AmbientSoundToggle />
@@ -104,32 +98,35 @@ export default function Header({
               <span>AI CONCIERGE</span>
             </button>
 
-            {/* CLUB MEMBERSHIP / GUEST AUTH BUTTON */}
+            {/* CLUB MEMBERSHIP / GUEST AUTH ICON BUTTON */}
             {isLoggedIn ? (
               <button
                 onClick={onOpenLoyalty}
-                className="hidden sm:inline-flex items-center gap-1.5 py-1.5 px-3 rounded-full bg-[#FFF7ED] hover:bg-[#FED7AA]/60 text-[#B86B35] border border-[#FED7AA] font-mono text-[11px] font-bold transition-all cursor-pointer shadow-2xs"
-                title={`${user.name} • ${tierInfo?.badgeLabel} • View Privilegio Card`}
+                className="hidden sm:flex items-center justify-center w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-[#FFF7ED] hover:bg-[#FED7AA] text-[#B86B35] border border-[#FED7AA] transition-all cursor-pointer shadow-2xs hover:scale-105 active:scale-95"
+                title={`${user.name} • ${tierInfo?.badgeLabel} (${user.points?.toLocaleString()} PTS) • Club Privilegio`}
+                aria-label="Club Privilegio Member Profile"
               >
-                <Crown size={12} className="text-[#B86B35]" />
-                <span>{user.points?.toLocaleString()} PTS</span>
+                <Crown size={15} className="text-[#B86B35]" />
               </button>
             ) : (
               <button
                 onClick={onOpenAuth}
-                className="hidden sm:inline-flex items-center gap-1.5 py-1.5 px-3 rounded-full bg-white hover:bg-[#F7F2EC] text-[#2B1B17] hover:text-[#B86B35] border border-[#DFCBB9] font-mono text-[11px] font-semibold transition-all cursor-pointer shadow-2xs"
+                className="hidden sm:flex items-center justify-center w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-white hover:bg-[#F7F2EC] text-[#2B1B17] hover:text-[#B86B35] border border-[#DFCBB9] transition-all cursor-pointer shadow-2xs hover:scale-105 active:scale-95"
+                title="Club Privilegio • Member Privileges & Sign In"
+                aria-label="Club Privilegio Sign In"
               >
-                <Crown size={12} className="text-[#B86B35]" />
-                <span>CLUB PRIVILEGIO</span>
+                <Crown size={15} className="text-[#B86B35]" />
               </button>
             )}
 
-            {/* RESERVE BUTTON */}
+            {/* RESERVE ICON BUTTON */}
             <button
               onClick={() => handleNavClick("reserve")}
-              className="hidden sm:inline-block py-1.5 px-4 rounded-full bg-[#B86B35] text-white hover:bg-[#8F4918] transition-all font-mono tracking-widest text-[11px] font-semibold shadow-xs cursor-pointer"
+              className="hidden sm:flex items-center justify-center w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-[#B86B35] text-white hover:bg-[#8F4918] transition-all shadow-xs cursor-pointer hover:scale-105 active:scale-95"
+              title="Reserve a Table"
+              aria-label="Reserve a Table"
             >
-              [ RESERVE ]
+              <Calendar size={15} />
             </button>
 
             {/* On mobile, if ambiance is playing, show a compact mute toggle button next to the hamburger icon */}
