@@ -62,10 +62,10 @@ export default function Header({
               [ EXPERIENCE ]
             </button>
             <button
-              onClick={() => handleNavClick("chef-awards")}
+              onClick={() => handleNavClick("loyalty")}
               className="text-[#4A3B34] hover:text-[#B86B35] transition-colors focus:outline-none cursor-pointer"
             >
-              [ MAESTRO ]
+              [ CLUB PRIVILEGIO ]
             </button>
           </div>
 
