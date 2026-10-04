@@ -15,9 +15,7 @@ import {
   Copy,
   Check,
   ChevronRight,
-  Calculator,
   ShieldCheck,
-  Coins,
   TrendingUp,
 } from "lucide-react";
 import { useAuth } from "../context/AuthContext";
@@ -29,13 +27,11 @@ export default function LoyaltyModal({
   onOpenSettings,
   onReserveWithReward,
 }) {
-  const { user, tierInfo, tiers, redeemReward, earnPointsFromBill } = useAuth();
-  const [activeTab, setActiveTab] = useState("overview"); // "overview" | "calculator" | "rewards" | "tiers" | "history"
+  const { user, tierInfo, tiers, redeemReward } = useAuth();
+  const [activeTab, setActiveTab] = useState("overview"); // "overview" | "rewards" | "tiers" | "history"
   const [copiedCode, setCopiedCode] = useState(null);
   const [redeemSuccess, setRedeemSuccess] = useState(null);
   const [redeemError, setRedeemError] = useState("");
-  const [calcBill, setCalcBill] = useState(3500);
-  const [calcFeedback, setCalcFeedback] = useState(null);
 
   if (!isOpen || !user) return null;
 
@@ -76,18 +72,6 @@ export default function LoyaltyModal({
       setTimeout(() => setRedeemError(""), 4000);
     }
   };
-
-  const handleSimulateBill = () => {
-    if (!earnPointsFromBill) return;
-    const res = earnPointsFromBill(calcBill);
-    if (res.success) {
-      setCalcFeedback(`🎉 Simulated bill settlement of ₹${calcBill.toLocaleString()}! Credited +${res.pointsEarned} Punti (${res.rate} tier rate) to your account.`);
-      setTimeout(() => setCalcFeedback(null), 6000);
-    }
-  };
-
-  const tierMultiplier = user.tier === "eccellenza" ? 0.20 : user.tier === "riserva" ? 0.15 : 0.10;
-  const simulatedEarned = Math.round(calcBill * tierMultiplier);
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 overflow-y-auto">
@@ -148,17 +132,6 @@ export default function LoyaltyModal({
             }`}
           >
             My Card
-          </button>
-          <button
-            onClick={() => setActiveTab("calculator")}
-            className={`flex-1 py-3 px-3 text-center uppercase tracking-wider font-semibold transition-all border-b-2 cursor-pointer whitespace-nowrap flex items-center justify-center gap-1 ${
-              activeTab === "calculator"
-                ? "border-[#B86B35] text-[#2B1B17] bg-white"
-                : "border-transparent text-[#7E6B60] hover:text-[#2B1B17]"
-            }`}
-          >
-            <Calculator size={13} className="text-[#B86B35]" />
-            <span>10% Bill Tool</span>
           </button>
           <button
             onClick={() => setActiveTab("rewards")}
@@ -404,11 +377,11 @@ export default function LoyaltyModal({
               {/* Action Buttons */}
               <div className="flex flex-col sm:flex-row gap-3 pt-2">
                 <button
-                  onClick={() => setActiveTab("calculator")}
+                  onClick={() => setActiveTab("rewards")}
                   className="flex-1 py-3 px-4 rounded-xl border border-[#DFC8B2] bg-white hover:bg-[#F7F2EC] text-[#2B1B17] font-mono text-xs uppercase tracking-wider font-semibold transition-colors flex items-center justify-center gap-2 cursor-pointer shadow-2xs"
                 >
-                  <Calculator size={14} className="text-[#B86B35]" />
-                  <span>Calculate 10% Bill Return</span>
+                  <Gift size={14} className="text-[#B86B35]" />
+                  <span>Browse Rewards Catalog</span>
                 </button>
                 <button
                   onClick={() => {
@@ -421,159 +394,6 @@ export default function LoyaltyModal({
                   <Utensils size={14} />
                   <span>Reserve Table & Dine</span>
                 </button>
-              </div>
-            </div>
-          )}
-
-          {/* TAB: 10% BILL POINTS CALCULATOR */}
-          {activeTab === "calculator" && (
-            <div className="space-y-5 animate-fadeIn">
-              <div className="pb-3 border-b border-[#EAE1D5]">
-                <div className="flex items-center gap-2">
-                  <div className="w-7 h-7 rounded-lg bg-[#B86B35]/10 border border-[#B86B35]/30 flex items-center justify-center text-[#B86B35]">
-                    <Calculator size={16} />
-                  </div>
-                  <h4 className="font-serif text-lg text-[#2B1B17]">
-                    10% Dining Bill Points Calculator
-                  </h4>
-                </div>
-                <p className="text-xs text-[#7E6B60] mt-1 leading-relaxed">
-                  Every food & wine bill paid at Sapori d'Italia earns <strong>10% (up to 20%)</strong> back in Sapori Punti, credited directly to your mobile number.
-                </p>
-              </div>
-
-              {calcFeedback && (
-                <div className="p-3.5 rounded-2xl bg-[#F0FDF4] border border-[#BBF7D0] text-[#15803D] text-xs font-mono flex items-center gap-2 animate-fadeIn">
-                  <CheckCircle2 size={16} className="shrink-0" />
-                  <span>{calcFeedback}</span>
-                </div>
-              )}
-
-              {/* Interactive Bill Slider Card */}
-              <div className="p-5 rounded-2xl bg-white border border-[#EAE1D5] shadow-xs space-y-4">
-                <div className="flex justify-between items-center">
-                  <label className="text-xs font-mono uppercase tracking-wider text-[#8C7769] font-semibold">
-                    Expected Dining Bill Amount
-                  </label>
-                  <span className="font-serif text-2xl font-bold text-[#2B1B17]">
-                    ₹{calcBill.toLocaleString()}
-                  </span>
-                </div>
-
-                {/* Range Slider */}
-                <input
-                  type="range"
-                  min="1000"
-                  max="15000"
-                  step="250"
-                  value={calcBill}
-                  onChange={(e) => setCalcBill(Number(e.target.value))}
-                  className="w-full h-2 bg-[#EFE9E2] rounded-lg appearance-none cursor-pointer accent-[#B86B35]"
-                />
-
-                {/* Quick Presets */}
-                <div className="flex flex-wrap gap-2 pt-1">
-                  <span className="text-[10px] font-mono text-[#8C7769] uppercase self-center mr-1">
-                    Presets:
-                  </span>
-                  {[1500, 2500, 3500, 5000, 7500, 10000].map((amt) => (
-                    <button
-                      key={amt}
-                      type="button"
-                      onClick={() => setCalcBill(amt)}
-                      className={`px-2.5 py-1 rounded-lg text-xs font-mono cursor-pointer transition-colors ${
-                        calcBill === amt
-                          ? "bg-[#B86B35] text-white font-bold"
-                          : "bg-[#FBF9F5] border border-[#EAE1D5] text-[#5C4A3E] hover:border-[#B86B35]"
-                      }`}
-                    >
-                      ₹{amt.toLocaleString()}
-                    </button>
-                  ))}
-                </div>
-              </div>
-
-              {/* Earnings Calculation Breakdown */}
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 font-mono text-center">
-                <div className="p-3.5 rounded-xl bg-white border border-[#EAE1D5]">
-                  <span className="text-[10px] uppercase text-[#8C7769] block">Your Rate</span>
-                  <span className="text-sm font-bold text-[#2B1B17] mt-0.5 block">
-                    {Math.round(tierMultiplier * 100)}% of Bill
-                  </span>
-                  <span className="text-[9px] text-[#B86B35]">
-                    {tierInfo.badgeLabel}
-                  </span>
-                </div>
-
-                <div className="p-3.5 rounded-xl bg-gradient-to-br from-[#FFF7ED] to-[#FFEDD5] border border-[#FED7AA]">
-                  <span className="text-[10px] uppercase text-[#B86B35] font-semibold block">You Earn</span>
-                  <span className="text-xl font-bold text-[#B86B35] mt-0.5 block">
-                    +{simulatedEarned.toLocaleString()} Punti
-                  </span>
-                  <span className="text-[9px] text-[#8C7769]">
-                    Permanent Tier Credit
-                  </span>
-                </div>
-
-                <div className="p-3.5 rounded-xl bg-white border border-[#EAE1D5]">
-                  <span className="text-[10px] uppercase text-[#8C7769] block">Turnaround</span>
-                  <span className="text-sm font-bold text-[#2B1B17] mt-0.5 block">
-                    Within 6 Hours
-                  </span>
-                  <span className="text-[9px] text-emerald-700 font-semibold">
-                    Direct SMS Notice
-                  </span>
-                </div>
-              </div>
-
-              {/* Unlocked Benefit Teaser */}
-              <div className="p-3.5 rounded-xl bg-[#F5EFEB] border border-[#EAE1D5] text-xs font-mono text-[#5C4A3E] flex items-center gap-2.5">
-                <Sparkles size={16} className="text-[#B86B35] shrink-0" />
-                <span>
-                  {simulatedEarned >= 1500 ? (
-                    <><strong>Grand Dining Tier!</strong> Earned enough to unlock an <strong>Artisan Truffle Tagliatelle</strong> or a sommelier pour of <strong>Castello Banfi Chianti DOCG</strong>.</>
-                  ) : simulatedEarned >= 800 ? (
-                    <><strong>VIP Milestone!</strong> This single meal unlocks a <strong>₹500 Dining Credit Voucher</strong> or handcrafted cocktail pairing.</>
-                  ) : simulatedEarned >= 500 ? (
-                    <><strong>High Return!</strong> This meal unlocks a <strong>₹300 Dining Credit Voucher</strong> or our signature <strong>Illy Tiramisù</strong>.</>
-                  ) : simulatedEarned >= 250 ? (
-                    <><strong>Great Start!</strong> This meal unlocks a <strong>₹150 Dining Credit Voucher</strong> (valid on min. bill ₹1,500).</>
-                  ) : (
-                    <>Dine and accumulate points toward luxury dining credits and reserve cellar bottles (4,500 pts).</>
-                  )}
-                </span>
-              </div>
-
-              {/* Simulate Button */}
-              <div className="space-y-2 pt-1">
-                <button
-                  type="button"
-                  onClick={handleSimulateBill}
-                  className="w-full py-3 bg-[#B86B35] hover:bg-[#8F4918] text-white font-mono text-xs uppercase tracking-wider font-semibold rounded-xl shadow-xs cursor-pointer flex items-center justify-center gap-2 transition-all"
-                >
-                  <Coins size={14} />
-                  <span>Simulate Bill Settlement (+{simulatedEarned} Punti)</span>
-                </button>
-                <p className="text-[10px] font-mono text-[#8C7769] text-center">
-                  *Demonstration test: Instantly adds points to your account balance and activity ledger.
-                </p>
-              </div>
-
-              {/* Anti-Fraud & Restaurant Terms Box */}
-              <div className="p-4 rounded-2xl bg-white border border-[#EAE1D5] space-y-2 text-[11px] text-[#5C4A3E] font-mono leading-relaxed">
-                <div className="flex items-center gap-1.5 text-[#2B1B17] font-semibold text-xs">
-                  <ShieldCheck size={14} className="text-[#B86B35]" />
-                  <span>Loyalty Integrity & Fair Terms Policy</span>
-                </div>
-                <p>
-                  • <strong>Verified Dining Spend Only:</strong> Points are earned exclusively from settled food & wine bills at the restaurant. Mere table bookings do not grant points to prevent fraudulent booking claims.
-                </p>
-                <p>
-                  • <strong>Fair Voucher Thresholds:</strong> Dining credit vouchers feature sensible minimum bill requirements (e.g., ₹150 off on ₹1,500+ bill) protecting our imported ingredient standards.
-                </p>
-                <p>
-                  • <strong>Permanent Tier Security:</strong> Your Tier status is calculated on cumulative lifetime points. Spending points on dining coupons will <strong>never downgrade your membership tier</strong>.
-                </p>
               </div>
             </div>
           )}

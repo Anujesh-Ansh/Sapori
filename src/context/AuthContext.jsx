@@ -293,7 +293,7 @@ export function AuthProvider({ children }) {
       rewardId: reward.id,
       title: reward.title,
       code: voucherCode,
-      minSpend: reward.minSpend || "Min. bill required",
+      minSpend: reward.minSpend || null,
       terms: reward.terms || "",
       unlockedAt: new Date().toLocaleDateString("en-US", { day: "numeric", month: "short", year: "numeric" }),
       status: "available",
