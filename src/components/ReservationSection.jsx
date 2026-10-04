@@ -180,7 +180,7 @@ export default function ReservationSection({ brand, preselectedDish, appliedRewa
               <option value="2 Covers (Intimate)">2 Covers (Intimate)</option>
               <option value="4 Covers (Social)">4 Covers (Social)</option>
               <option value="6 Covers (Family)">6 Covers (Family)</option>
-              <option value="8 Covers (Max Salon)">8 Covers (Max Salon)</option>
+              <option value="8 Covers (Private Dining Room)">8 Covers (Private Dining Room)</option>
             </select>
           </div>
 
